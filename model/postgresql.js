@@ -18,14 +18,14 @@ function getInsertQuery(data) {
 function getFetchQuery(field, value) {
   const fetchQuery = {
     text : `SELECT * FROM data where ${field}[1] = $1`,
-    values : [`${value}`]
+    values : [value]
   }
   return fetchQuery
 }
 
 function getUpdateVerifiedQuery(id) {
   const updateQuery = {
-    // name : 'set-verified-to-true',
+    name : 'set-verified-to-true',
     text : 'UPDATE data SET verified = true WHERE _id = $1',
     values : [id]
   }
@@ -34,18 +34,20 @@ function getUpdateVerifiedQuery(id) {
 
 function getupdateTokenAndExpiresQuery(id, token, expires) {
   const updateQuery = {
-    // name : 'set-newtoken-newexpires',
-    text : `UPDATE data SET token = ${token} expires = ${expires} WHERE _id = $1`,
-    values : [id]
+    name : 'set-newtoken-newexpires',
+    text : 'UPDATE data SET token[1] = $1, expires = $2 WHERE _id = $3',
+    values : [token, expires, id]
   }
+  return updateQuery
 }
 
 function getUpdatePasswordQuery(password, id) {
   const updateQuery = {
-    // name = 'set-new-password',
-    text = `UPDATE data SET password[1] = ${password} WHERE _id = $1`,
-    values = [id]
+    name : 'set-new-password',
+    text : 'UPDATE data SET password[1] = $1 WHERE _id = $2',
+    values : [password, id]
   }
+  return updateQuery
 }
 
 function getDeleteQuery(id) {
@@ -71,13 +73,12 @@ async function fetch(field, value) {
   const fetchResult =
     await client.query(fetchQuery)
       .catch((error) => console.log(error))
-  console.log(fetchResult.rows, 'Fetch Result')
+  console.log(fetchResult, 'Fetch Result')
   //Empty or not will be tested
   if(fetchResult === undefined) return undefined
-  else
-    return fetchResult.rows.length
-           ? structuredResultObject(fetchResult.rows[0])
-           : {}
+  return fetchResult.rows.length
+         ? structuredResultObject(fetchResult.rows[0])
+         : {}
 }
 
 async function updateVerified(id) {
