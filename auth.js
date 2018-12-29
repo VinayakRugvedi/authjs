@@ -11,7 +11,7 @@ const auth = {
   resendVerificationLink, //Arguments : email
   updateVerifiedStatus, //Arguments : token
   authenticateUser, //Arguments : email and password
-  changePassword, //Arguments : email and password
+  changePassword, //Arguments : email and new password
 }
 
 module.exports = auth
