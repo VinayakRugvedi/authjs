@@ -1,45 +1,51 @@
 const config = require('../config')
 const dataBase = require(`../model/${config.dataBaseConfiguration.dataBase}`)
 
-async function updateVerifiedStatus(token) {
-  let fetchResult = await dataBase.fetch('token', token)
-  if(fetchResult === undefined)
-    console.log('Couldnt retrive your data; Try clicking the link again after some time...')
-    // msg : 'Couldnt retrive data; Try clicking the link again after some time...'
+async function updateVerifiedStatus (identifier, otp = null) {
+  let fetchResult = await dataBase.fetch(otp ? 'phoneNumber' : 'token', identifier)
+  if (fetchResult === undefined)
+    console.log('DB Error : OOPS!, something went wrong')
   else {
-    if(Object.keys(fetchResult).length === 0)
-      console.log('This link is invalid and we dont have your data, kindle sign up first!')
-      // msg : 'This link is invalid and we dont have your data, kindle sign up again!'
-    else await takeActionBasedOnLinkExpiration(fetchResult, res)
-          .catch((error) => console.log(error)) //Not required
+    if (Object.keys(fetchResult).length === 0)
+      console.log('This link is invalid')
+    else if (fetchResult.verified) console.log('You have already registered and verified, just SignUp!')
+    else {
+      !otp
+        ? await takeActionBasedOnLinkExpiration(fetchResult)
+          .catch((error) => console.log(error)) // Not required
+        : await takeActionBasedOnOtpExpiration(fetchResult, otp)
+          .catch((error) => console.log(error))
+    }
   }
 }
 
-async function takeActionBasedOnLinkExpiration(fetchResult, res) {
-  let isLinkValid = await isExpired(fetchResult.expires, fetchResult._id, res)
-  if(!isLinkValid) {
+async function takeActionBasedOnLinkExpiration (fetchResult) {
+  let isTokenValid = await isExpired(fetchResult.expires)
+  if (!isTokenValid) {
     let updateResult = await dataBase.updateVerified(fetchResult._id)
-    if(updateResult === undefined)
+    if (updateResult === undefined)
       console.log('Couldnt verifiy; Try clicking the link again after some time...(DB Error)')
-      // msg : 'Couldnt set data; Try clicking the link again after some time...'
     else
       console.log('Congratulations, You are verified...')
-      // msg : 'Congratulations, You are verified...'
-  }
+  } else console.log('The link has expired')
 }
 
-async function isExpired(time, id, res) {
+async function takeActionBasedOnOtpExpiration (fetchResult, otp) {
+  if (Number(otp) === fetchResult.otp) {
+    let isOtpValid = await isExpired(fetchResult.expires)
+    if (!isOtpValid) {
+      let updateResult = await dataBase.updateVerified(fetchResult._id)
+      if (updateResult === undefined)
+        console.log('Couldnt verifiy; Try clicking the link again after some time...(DB Error)')
+      else
+        console.log('Congratulations, You are verified...')
+    } else console.log('The OTP has expired')
+  } else console.log('Invalid OTP')
+}
+
+async function isExpired(time) {
   let currentTime = Date.now()
-  if(currentTime > time) {
-    let deleteResult = await dataBase.deleteData(id)
-    if(deleteResult === undefined)
-      console.log('Oops!, something went wrong; Try again...')
-      // msg : 'Oops!, something went wrong; Try again...'
-    else
-      console.log('The verification link has expired; Should I resend..?')
-      // msg : 'The verification link has expired; Kindle re-register at the registration page'
-  }
-  else return false
+  return currentTime > time ? true : false
 }
 
 module.exports = updateVerifiedStatus
