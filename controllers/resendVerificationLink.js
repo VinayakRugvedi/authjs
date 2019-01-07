@@ -13,9 +13,10 @@ async function resendVerificationLink(email) {
     console.log('There is no account registered with this email address; Register soon!')
     //This email isnt registered yet; Register soon
   else {
+    //Should i check the verified status..?
     let token = cryptoRandomString(32)
     let date = new Date()
-    let expires = date.setUTCHours(date.getUTCHours + 2)
+    let expires = date.setUTCHours(date.getUTCHours() + 2)
     let updateResult = await dataBase.updateTokenAndExpires(userData._id, token, expires)
     if(updateResult === undefined)
       console.log('Oops something went wrong; Try again')
