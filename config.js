@@ -27,10 +27,10 @@
 
 // Please ensure to have the right support before configuring
 const dataBaseConfiguration = {
-  dataBase :
+  dataBase: '',
   /* 'postgresql' or 'mongodb' */
 
-  connectionString :
+  connectionString: ''
   /* 'postgresql://dbuser:secretpassword@database.server.com:port/mydb'
     or
       'mongodb+srv://dbuser:secretpassword@cluster0-synfk.mongodb.net/test?retryWrites=true'
@@ -38,21 +38,43 @@ const dataBaseConfiguration = {
 }
 
 const mailConfiguration = {
-  mailer :
-  /* mailgun or sendgrid*/
+  mailer: '',
+  /* mailgun or sendgrid */
 
-  apiKey :
+  apiKey: '',
   /* Provide your private key here
      example : 'XXXXXX2b715c9a0790994f135XXXXXXX-b378XXXX-eb713XXX'
   */
-  domain :
-  //Required only if the mailer is set to mailgun
+  domain: '',
+  // Required only if the mailer is set to mailgun
   /* Provide your sandbox/custom domain name (mailgun)
      example : 'sandboxXXXXXX392eb64c2aaf4459fa2cXXXXXX.mailgun.org'
   */
+
+  from: ''
+  /* Format : 'Name <me@mailer.sample.org>'
+     Default : 'Verifier <me@mailgun.sample.org>' or 'Verifier <me@sendgrid.sample.org>'
+  */
+}
+
+const smsConfiguration = {
+  sender: '',
+  /* nexmo or twilio */
+
+  from: '',
+  // A Valid phone number in the format : [+][country code][phone number including area code] or shortcode, or alphanumeric sender
+
+  // Nexmo
+  apiKey: '',
+  apiSecret: '',
+
+  // Twilio
+  accountSid: '',
+  authToken: ''
 }
 
 module.exports = {
   dataBaseConfiguration,
-  mailConfiguration
+  mailConfiguration,
+  smsConfiguration
 }
