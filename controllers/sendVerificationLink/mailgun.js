@@ -1,9 +1,15 @@
-const mailgunConfig = require('./mailgunConfig')()
-const mailgun = require('mailgun-js')(mailgunConfig)
+const config = require('../../config')
+const apiKey = config.mailConfiguration.apiKey
+const domain = config.mailConfiguration.domain
 
-function sendVerificationLink(email, token, res) {
+const mailgun = require('mailgun-js')({
+  apiKey,
+  domain
+})
+
+function sendVerificationLink(email, token) {
   let mail = {
-    from : 'Anonymous <me@mailgun.sample.org>',
+    from : 'Verifier <me@mailgun.sample.org>',
     to : `${email}`,
     subject : 'Verifying You!',
     html : `<p>Click the below link to verify yourself : </p>
@@ -11,17 +17,14 @@ function sendVerificationLink(email, token, res) {
                http://localhost:5000/verify/${token}</a>`
   }
 
-  mailgun.messages().send(mail, (err, body) => {
-    if(err) {
-      console.log(err)
-      res.status(502).json({
-        msg : "Your data is securely stored but coudn't send the verification link!; Try again..."
-      })
+  mailgun.messages().send(mail, (error, body) => {
+    if(error) {
+      console.log(error)
+      console.log('Your data is securely stored but coudnt send the verification link!; Try again...')
+      //A new verification link can be requested
     } else {
       console.log(body)
-      res.status(201).json({
-        msg : "Your data is securely stored and the verification link has been successfully sent; Check your inbox or spam folder"
-      })
+      console.log('Your data is securely stored and the verification link has been successfully sent; Check your inbox or spam folder')
     }
   })
 }

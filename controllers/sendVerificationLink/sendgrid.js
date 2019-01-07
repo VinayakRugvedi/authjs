@@ -1,11 +1,13 @@
+const config = require('../../config')
+const apiKey = config.mailConfiguration.apiKey
+
 const sgMail = require('@sendgrid/mail')
-const apiKey = require('./sendgridConfig')
+
 sgMail.setApiKey(apiKey)
 
-
-function sendVerificationLink(email, token, res) {
+function sendVerificationLink(email, token) {
   let mail = {
-    from : 'Anonymous <me@sendgrid.sample.org>',
+    from : 'Verifier <me@sendgrid.sample.org>',
     to : `${email}`,
     subject : 'Verifying You!',
     html : `<p>Click the below link to verify yourself : </p>
@@ -15,15 +17,13 @@ function sendVerificationLink(email, token, res) {
 
   sgMail.send(mail)
     .then(() => {
-      res.status(201).json({
-        msg : "Your data is securely stored and the verification link has been successfully sent; Check your inbox or spam folder"
-      })
+      console.log('Your data is securely stored and the verification link has been successfully sent; Check your inbox or spam folder')
+        // msg : "Your data is securely stored and the verification link has been successfully sent; Check your inbox or spam folder"
     })
     .catch((error) => {
       console.log(error)
-      res.status(502).json({
-        msg : "Your data is securely stored but coudn't send the verification link!; Try again..."
-      })
+      console.log('Your data is securely stored but coudnt send the verification link!; Try again...')
+        // msg : "Your data is securely stored but coudn't send the verification link!; Try again..."
     })
 }
 
