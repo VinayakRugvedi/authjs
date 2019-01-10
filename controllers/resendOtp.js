@@ -5,21 +5,32 @@ const dataBase = require(`../model/${config.dataBaseConfiguration.dataBase}`)
 const sendOtp = require(`./sendOtp/${config.smsConfiguration.sender}`)
 
 async function resendOtp (phoneNumber) {
-  let userData = await dataBase.fetch('phonenumber', phoneNumber)
-  if (userData === undefined)
-    console.log('Oops, something went wrong; Try again later')
-  else if (Object.keys(userData).length === 0)
-    console.log('There is no account registered with this phoneNumber; Register soon!')
+  const userData =
+    await dataBase.fetch('phonenumber', phoneNumber)
+      .catch(error => { throw error })
+
+  if (Object.keys(userData).length === 0)
+    return {
+      message: `The user : ${phoneNumber} has not yet registered!`
+    }
   else {
-    let otp = otpLib.authenticator.generate(userData.token) // Will generate same OTP! - 30seconds
-    let date = new Date()
-    let expires = date.setUTCMinutes(date.getUTCMinutes() + 5)
-    let updateResult = await dataBase.updateOtpAndExpires(userData._id, otp, expires)
-    if (updateResult === undefined)
-      console.log('Oops something went wrong; Try again')
-    else {
-      let from = config.smsConfiguration.from
-      sendOtp(from, userData.phonenumber, otp)
+    if (userData.verified === true)
+      return {
+        message: `The user : ${phoneNumber} has already been verified!`
+      }
+
+    const otp = otpLib.authenticator.generate(userData.token)
+    const date = new Date()
+    const expires = date.setUTCMinutes(date.getUTCMinutes() + 5)
+
+    await dataBase.updateOtpAndExpires(userData._id, otp, expires)
+      .catch(error => { throw error })
+
+    await sendOtp(userData.phonenumber, otp)
+      .catch(error => { throw error })
+
+    return {
+      message: `The OTP has been resent to : ${phoneNumber}`
     }
   }
 }

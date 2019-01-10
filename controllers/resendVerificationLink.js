@@ -4,27 +4,34 @@ const config = require('../config')
 const dataBase = require(`../model/${config.dataBaseConfiguration.dataBase}`)
 const sendVerificationLink = require(`./sendVerificationLink/${config.mailConfiguration.mailer}`)
 
-async function resendVerificationLink(email) {
-  let userData = await dataBase.fetch('email', email)
-  if(userData === undefined)
-    console.log('Oops, something went wrong; Try again later')
-    //Oops, something went wrong; Try again later
-  else if(Object.keys(userData).length === 0)
-    console.log('There is no account registered with this email address; Register soon!')
-    //This email isnt registered yet; Register soon
+async function resendVerificationLink (email) {
+  const userData =
+    await dataBase.fetch('email', email)
+      .catch(error => { throw error })
+
+  if(Object.keys(userData).length === 0)
+    return {
+      message: `The user : ${email} has not yet registered!`
+    }
   else {
-    //Should i check the verified status..?
-    let token = cryptoRandomString(32)
-    let date = new Date()
-    let expires = date.setUTCHours(date.getUTCHours() + 2)
-    let updateResult = await dataBase.updateTokenAndExpires(userData._id, token, expires)
-    if(updateResult === undefined)
-      console.log('Oops something went wrong; Try again')
-      //Oops something went wrong; Try again
-    else
-      //Successfull updation
-      //Send the link now
-      sendVerificationLink(userData.email, token)
+    if (userData.verified === true)
+      return {
+        message: `The user : ${email} has already been verified!`
+      }
+
+    const token = cryptoRandomString(32)
+    const date = new Date()
+    const expires = date.setUTCHours(date.getUTCHours() + 2)
+    await dataBase.updateTokenAndExpires(userData._id, token, expires)
+      .catch(error => { throw error })
+    // Successfull updation
+    // Send the link now
+    await sendVerificationLink(userData.email, token)
+      .catch(error => { throw error })
+
+    return {
+      message: `The verification link has been resent to : ${email}`
+    }
   }
 }
 
