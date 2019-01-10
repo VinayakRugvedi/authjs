@@ -6,21 +6,21 @@ const authToken = config.smsConfiguration.authToken
 
 const twilio = new Twilio(accountSid, authToken)
 
-function sendOtp (from, phoneNumber, otp) {
+async function sendOtp (phoneNumber, otp) {
+  const from = config.smsConfiguration.from
   // [+][country code][phone number including area code]
-  twilio.messages.create({
-    from: from, // Should be a valid phone number, shortcode, or alphanumeric sender ID
-    to: phoneNumber,
-    body: `Hello, OTP : ${otp}`
-  })
-    .then((responseData) => {
-      console.log(responseData, 'Twilio : Successfully sent the OTP')
-      console.log('The OTP has been sent!')
+  const responseData =
+    await twilio.messages.create({
+      from: from, // Should be a valid phone number, shortcode, or alphanumeric sender ID
+      to: phoneNumber,
+      body: `Hello, OTP : ${otp}`
     })
-    .catch((error) => {
-      console.log(error, 'Twilio : Error')
-      console.log('Coudnt send the OTP!')
-    })
+      .catch((error) => { throw error })
+
+  return {
+    twilioResponse: responseData,
+    message: `The user data is securely stored and the OTP has been sent to ${phoneNumber}`
+  }
 }
 
 module.exports = sendOtp
