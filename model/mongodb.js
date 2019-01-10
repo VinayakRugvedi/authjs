@@ -10,22 +10,22 @@ mongoose.connect(connectionString, {
 
 const db = mongoose.connection
 
-const userDataSchema = new mongoose.Schema({
-  token : String,
-  expires : Number,
-  email : String,
-  otp : Number,
-  phonenumber : String,
-  password : String,
-  verified : Boolean
+const UserDataSchema = new mongoose.Schema({
+  token: String,
+  expires: Number,
+  email: String,
+  otp: Number,
+  phonenumber: String,
+  password: String,
+  verified: Boolean
 })
 
-//Compiling schema into model
-const userData = mongoose.model('data', userDataSchema)
+// Compiling schema into model
+const UserData = mongoose.model('data', UserDataSchema)
 
 db.on('error', (error) => {
-  console.log(error)
   console.log('Error connectiong to the database!')
+  throw error
 })
 
 db.once('open', () => {
@@ -33,22 +33,22 @@ db.once('open', () => {
 })
 
 function getInsertInfo (data, flag) {
-  if(!flag) {
-    return new userData({
-      token : data.token,
-      expires : data.expires,
-      email : data.email,
-      password : data.password,
-      verified : data.verified
+  if (!flag) {
+    return new UserData({
+      token: data.token,
+      expires: data.expires,
+      email: data.email,
+      password: data.password,
+      verified: data.verified
     })
   } else {
-    return new userData({
-      token : data.token,
-      expires : data.expires,
-      otp : data.otp,
-      phonenumber : data.phoneNumber,
-      password : data.password,
-      verified : data.verified
+    return new UserData({
+      token: data.token,
+      expires: data.expires,
+      otp: data.otp,
+      phonenumber: data.phoneNumber,
+      password: data.password,
+      verified: data.verified
     })
   }
 }
@@ -57,7 +57,7 @@ async function insert (data, flag) {
   let info = getInsertInfo(data, flag)
   let insertResult =
     await info.save()
-      .catch(insertError => console.log(insertError))
+      .catch(error => { throw error })
   console.log(insertResult, 'Insert Result')
   // insertResult is a document object
   return insertResult
@@ -65,8 +65,8 @@ async function insert (data, flag) {
 
 async function fetch (key, value) {
   let fetchResult =
-    await userData.find({ [key] : value }) // Computed Property
-      .catch(fetchError => console.log(fetchError))
+    await UserData.find({ [key]: value }) // Computed Property
+      .catch(error => { throw error })
   console.log(fetchResult, 'Fetch Result')
   // fetchResult is an array of objects
   if (fetchResult === undefined) return undefined
@@ -75,19 +75,19 @@ async function fetch (key, value) {
     : {}
 }
 
-async function updateVerified(id) {
+async function updateVerified (id) {
   let updateResult =
-    await userData.findOneAndUpdate({ _id : id }, { $set : { verified : true }})
-      .catch(updateError => console.log(updateError))
+    await UserData.findOneAndUpdate({ _id: id }, { $set: { verified: true }})
+      .catch(error => { throw error })
   console.log(updateResult, 'Update Result')
   // updateResult is a document object
   return updateResult
 }
 
-async function updateTokenAndExpires(id, token, expires) {
+async function updateTokenAndExpires (id, token, expires) {
   let updateResult =
-    await userData.findOneAndUpdate({ _id : id }, { $set : { token, expires }})
-      .catch(updateError => console.log(updateError))
+    await UserData.findOneAndUpdate({ _id: id }, { $set: { token, expires }})
+      .catch(error => { throw error })
   console.log(updateResult, 'Update Result')
   // updateResult is a document object
   return updateResult
@@ -95,8 +95,8 @@ async function updateTokenAndExpires(id, token, expires) {
 
 async function updateOtpAndExpires (id, otp, expires) {
   let updateResult =
-    await userData.findOneAndUpdate({ _id : id }, { $set: { otp, expires }})
-      .catch(updateError => console.log(updateError))
+    await UserData.findOneAndUpdate({ _id: id }, { $set: { otp, expires }})
+      .catch(error => { throw error })
   console.log(updateResult, 'Update Result')
   // updateResult is a document object
   return updateResult
@@ -104,8 +104,8 @@ async function updateOtpAndExpires (id, otp, expires) {
 
 async function updatePassword (password, id) {
   let updateResult =
-    await userData.findOneAndUpdate({ _id : id }, { $set : { password }})
-      .catch(updateError => console.log(updateError))
+    await UserData.findOneAndUpdate({ _id: id }, { $set: { password }})
+      .catch(error => { throw error })
   console.log(updateResult, 'Update Result')
   // updateResult is a document object
   return updateResult
@@ -113,8 +113,8 @@ async function updatePassword (password, id) {
 
 async function deleteData (id) {
   let deleteResult =
-    await userData.findOneAndDelete({ _id : id })
-      .catch(deleteError => console.log(deleteError))
+    await UserData.findOneAndDelete({ _id: id })
+      .catch(error => { throw error })
   console.log(deleteResult, 'Update Result')
   // deleteResult is a document object
   return deleteResult
