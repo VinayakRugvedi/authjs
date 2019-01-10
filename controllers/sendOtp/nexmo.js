@@ -9,19 +9,28 @@ const nexmo = new Nexmo({
   apiSecret
 })
 
-function sendOtp (from, phoneNumber, otp) {
-  const text = `Hello, OTP : ${otp}`
+async function sendOtp (phoneNumber, otp) {
+  const text = `Hello, your OTP is : ${otp}`
+  const from = config.smsConfiguration.from
 
-  nexmo.message.sendSms(from, phoneNumber, text,
-    (error, responseData) => {
-      if (error) {
-        console.log(error, 'Nexmo : Error')
-        console.log('Coudnt send the OTP!')
-      } else {
-        console.log(responseData, 'Nexmo : Successfully sent the OTP')
-        console.log('The OTP has been sent!')
-      }
+  function sendSms () {
+    return new Promise((resolve, reject) => {
+      nexmo.message.sendSms(from, phoneNumber, text,
+        (error, responseData) => {
+          if (error) reject(error)
+          else resolve(responseData)
+        })
     })
+  }
+
+  const responseData =
+    await sendSms()
+      .catch(error => { throw error })
+
+  return {
+    nexmoResponse: responseData,
+    message: `The user data is securely stored and the OTP has been sent to ${phoneNumber}`
+  }
 }
 
 module.exports = sendOtp
