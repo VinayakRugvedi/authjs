@@ -2,14 +2,14 @@ const cryptoRandomString = require('crypto-random-string')
 const otpLib = require('otplib')
 const bcrypt = require('bcrypt')
 
-async function hashPasswordAndFormulateUserObject(userName, password, flag, userData = null) {
-  let token = cryptoRandomString(32)
-  let date = new Date()
-  userData = {
+async function hashPasswordAndFormulateUserObject (userName, password, flag) {
+  const token = cryptoRandomString(32)
+  const date = new Date()
+  const userData = {
     token,
-    verified : false
+    verified: false
   }
-  if(userData === null && !flag) {
+  if (!flag) {
     userData.email = userName
     userData.expires = date.setUTCHours(date.getUTCHours() + 2) // Future time in ms from Jan 1, 1970
   } else {
@@ -20,16 +20,11 @@ async function hashPasswordAndFormulateUserObject(userName, password, flag, user
 
   const hash =
     await bcrypt.hash(password, 10)
-      .catch((error) => console.log(error))
+      .catch(error => { throw error })
 
-  if(hash === undefined)
-    console.log('Couldnt securely store your password; Try Again...')
-    // msg : 'Couldnt securely store your password; Try Again... '
-  else {
-    console.log(hash)
-    userData.password = hash
-    return userData
-  }
+  console.log(hash, 'Hash of the password')
+  userData.password = hash
+  return userData
 }
 
 module.exports = hashPasswordAndFormulateUserObject
