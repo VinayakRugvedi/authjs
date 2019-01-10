@@ -2,49 +2,76 @@ const config = require('../config')
 const dataBase = require(`../model/${config.dataBaseConfiguration.dataBase}`)
 
 async function updateVerifiedStatus (identifier, otp = null) {
-  let fetchResult = await dataBase.fetch(otp ? 'phoneNumber' : 'token', identifier)
-  if (fetchResult === undefined)
-    console.log('DB Error : OOPS!, something went wrong')
-  else {
-    if (Object.keys(fetchResult).length === 0)
-      console.log('This link is invalid')
-    else if (fetchResult.verified) console.log('You have already registered and verified, just SignUp!')
-    else {
-      !otp
-        ? await takeActionBasedOnLinkExpiration(fetchResult)
-          .catch((error) => console.log(error)) // Not required
-        : await takeActionBasedOnOtpExpiration(fetchResult, otp)
-          .catch((error) => console.log(error))
+  const fetchResult =
+    await dataBase.fetch(otp ? 'phoneNumber' : 'token', identifier)
+      .catch(error => { throw error })
+
+  if (Object.keys(fetchResult).length === 0) {
+    if(identifier === 'phoneNumber')
+      return {
+        message: `The user : ${identifier} has not yet registered! -- Cannot verify`
+      }
+    return {
+      message: `The token : ${identifier} is not a valid one(Invalid link) -- Cannot verify`
     }
+  } else if (fetchResult.verified)
+    return {
+      message: `The user : ${fetchResult[identifier]} has already been registered and verified - User can now Sign In with his/her credentials`
+    }
+  else {
+    const returnObject =
+    !otp
+      ? await takeActionBasedOnLinkExpiration(fetchResult)
+        .catch(error => { throw error })
+      : await takeActionBasedOnOtpExpiration(fetchResult, otp)
+        .catch(error => { throw error })
+    return returnObject
   }
 }
 
 async function takeActionBasedOnLinkExpiration (fetchResult) {
-  let isTokenValid = await isExpired(fetchResult.expires)
+  const isTokenValid =
+    await isExpired(fetchResult.expires)
+      .catch(error => { throw error })
+
   if (!isTokenValid) {
-    let updateResult = await dataBase.updateVerified(fetchResult._id)
-    if (updateResult === undefined)
-      console.log('Couldnt verifiy; Try clicking the link again after some time...(DB Error)')
-    else
-      console.log('Congratulations, You are verified...')
-  } else console.log('The link has expired')
+    await dataBase.updateVerified(fetchResult._id)
+      .catch(error => { throw error })
+
+    return {
+      message: `The user has been successfully verified`
+    }
+  } else
+    return {
+      message: `The verification link has been expired`
+    }
 }
 
 async function takeActionBasedOnOtpExpiration (fetchResult, otp) {
   if (Number(otp) === fetchResult.otp) {
-    let isOtpValid = await isExpired(fetchResult.expires)
+    const isOtpValid =
+      await isExpired(fetchResult.expires)
+        .catch(error => { throw error })
+
     if (!isOtpValid) {
-      let updateResult = await dataBase.updateVerified(fetchResult._id)
-      if (updateResult === undefined)
-        console.log('Couldnt verifiy; Try clicking the link again after some time...(DB Error)')
-      else
-        console.log('Congratulations, You are verified...')
-    } else console.log('The OTP has expired')
-  } else console.log('Invalid OTP')
+      await dataBase.updateVerified(fetchResult._id)
+        .catch(error => { throw error })
+
+      return {
+        message: `The user has been successfully verified`
+      }
+    } else
+      return {
+        messsage: `The OTP has expired`
+      }
+  } else
+    return {
+      message: `Invalid OTP`
+    }
 }
 
-async function isExpired(time) {
-  let currentTime = Date.now()
+async function isExpired (time) {
+  const currentTime = Date.now()
   return currentTime > time ? true : false
 }
 
