@@ -32,7 +32,8 @@ async function sendVerificationLink (email, token) {
 
   return {
     mailgunResponse: responseData,
-    message: `The user data is securely stored and the verification link has been sent to : ${email}`
+    authCode: 3,
+    authMessage: `The user data is securely stored and the verification link has been sent to : ${email}`
   }
 }
 
