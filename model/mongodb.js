@@ -11,30 +11,42 @@ mongoose.connect(connectionString, {
 const db = mongoose.connection
 
 const UserDataSchema = new mongoose.Schema({
-  token: String,
+  token: {
+    type: String,
+    required: true,
+    unique: true
+  },
   expires: Number,
   email: String,
   otp: Number,
   phonenumber: String,
-  password: String,
-  verified: Boolean
+  password: {
+    type: String,
+    required: true,
+    unique: true
+  },
+  verified: {
+    type: Boolean,
+    required: true
+  }
 })
 
 // Compiling schema into model
-const UserData = mongoose.model('data', UserDataSchema)
+const AuthAccount = mongoose.model('authaccount', UserDataSchema)
 
 db.on('error', (error) => {
   console.log('Error connectiong to the database!')
-  throw error
+  console.log(error)
+  process.exit(0)
 })
 
 db.once('open', () => {
-  console.log('Successfully connected to the database...')
+  console.log('\nSuccessfully connected to the database...\n')
 })
 
 function getInsertInfo (data, flag) {
   if (!flag) {
-    return new UserData({
+    return new AuthAccount({
       token: data.token,
       expires: data.expires,
       email: data.email,
@@ -42,7 +54,7 @@ function getInsertInfo (data, flag) {
       verified: data.verified
     })
   } else {
-    return new UserData({
+    return new AuthAccount({
       token: data.token,
       expires: data.expires,
       otp: data.otp,
@@ -65,7 +77,7 @@ async function insert (data, flag) {
 
 async function fetch (key, value) {
   let fetchResult =
-    await UserData.find({ [key]: value }) // Computed Property
+    await AuthAccount.find({ [key]: value }) // Computed Property
       .catch(error => { throw error })
   console.log(fetchResult, 'Fetch Result')
   // fetchResult is an array of objects
@@ -77,7 +89,7 @@ async function fetch (key, value) {
 
 async function updateVerified (id) {
   let updateResult =
-    await UserData.findOneAndUpdate({ _id: id }, { $set: { verified: true }})
+    await AuthAccount.findOneAndUpdate({ _id: id }, { $set: { verified: true }})
       .catch(error => { throw error })
   console.log(updateResult, 'Update Result')
   // updateResult is a document object
@@ -86,7 +98,7 @@ async function updateVerified (id) {
 
 async function updateTokenAndExpires (id, token, expires) {
   let updateResult =
-    await UserData.findOneAndUpdate({ _id: id }, { $set: { token, expires }})
+    await AuthAccount.findOneAndUpdate({ _id: id }, { $set: { token, expires }})
       .catch(error => { throw error })
   console.log(updateResult, 'Update Result')
   // updateResult is a document object
@@ -95,7 +107,7 @@ async function updateTokenAndExpires (id, token, expires) {
 
 async function updateOtpAndExpires (id, otp, expires) {
   let updateResult =
-    await UserData.findOneAndUpdate({ _id: id }, { $set: { otp, expires }})
+    await AuthAccount.findOneAndUpdate({ _id: id }, { $set: { otp, expires }})
       .catch(error => { throw error })
   console.log(updateResult, 'Update Result')
   // updateResult is a document object
@@ -104,7 +116,7 @@ async function updateOtpAndExpires (id, otp, expires) {
 
 async function updatePassword (password, id) {
   let updateResult =
-    await UserData.findOneAndUpdate({ _id: id }, { $set: { password }})
+    await AuthAccount.findOneAndUpdate({ _id: id }, { $set: { password }})
       .catch(error => { throw error })
   console.log(updateResult, 'Update Result')
   // updateResult is a document object
@@ -113,7 +125,7 @@ async function updatePassword (password, id) {
 
 async function deleteData (id) {
   let deleteResult =
-    await UserData.findOneAndDelete({ _id: id })
+    await AuthAccount.findOneAndDelete({ _id: id })
       .catch(error => { throw error })
   console.log(deleteResult, 'Update Result')
   // deleteResult is a document object
