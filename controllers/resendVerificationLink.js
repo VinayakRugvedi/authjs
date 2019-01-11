@@ -11,12 +11,14 @@ async function resendVerificationLink (email) {
 
   if(Object.keys(userData).length === 0)
     return {
-      message: `The user : ${email} has not yet registered!`
+      authCode: 13,
+      authMessage: `The user : ${email} has not yet registered!`
     }
   else {
     if (userData.verified === true)
       return {
-        message: `The user : ${email} has already been verified!`
+        authCode: 15,
+        authMessage: `The user : ${email} has already been verified!`
       }
 
     const token = cryptoRandomString(32)
@@ -26,12 +28,12 @@ async function resendVerificationLink (email) {
       .catch(error => { throw error })
     // Successfull updation
     // Send the link now
-    await sendVerificationLink(userData.email, token)
-      .catch(error => { throw error })
+    const returnObject =
+      await sendVerificationLink(userData.email, token)
+        .catch(error => { throw error })
 
-    return {
-      message: `The verification link has been resent to : ${email}`
-    }
+    returnObject.authMessage = `The verification link has been resent to : ${email}`
+    return returnObject
   }
 }
 

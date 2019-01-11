@@ -11,12 +11,14 @@ async function resendOtp (phoneNumber) {
 
   if (Object.keys(userData).length === 0)
     return {
-      message: `The user : ${phoneNumber} has not yet registered!`
+      authCode: 13,
+      authMessage: `The user : ${phoneNumber} has not yet registered!`
     }
   else {
     if (userData.verified === true)
       return {
-        message: `The user : ${phoneNumber} has already been verified!`
+        authCode: 15,
+        authMessage: `The user : ${phoneNumber} has already been verified!`
       }
 
     const otp = otpLib.authenticator.generate(userData.token)
@@ -26,12 +28,12 @@ async function resendOtp (phoneNumber) {
     await dataBase.updateOtpAndExpires(userData._id, otp, expires)
       .catch(error => { throw error })
 
-    await sendOtp(userData.phonenumber, otp)
-      .catch(error => { throw error })
+    const returnObject =
+      await sendOtp(userData.phonenumber, otp)
+        .catch(error => { throw error })
 
-    return {
-      message: `The OTP has been resent to : ${phoneNumber}`
-    }
+    returnObject.authMessage = `The OTP has been resent to : ${phoneNumber}`
+    return returnObject
   }
 }
 

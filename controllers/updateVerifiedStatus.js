@@ -3,21 +3,27 @@ const dataBase = require(`../model/${config.dataBaseConfiguration.dataBase}`)
 
 async function updateVerifiedStatus (identifier, otp = null) {
   const fetchResult =
-    await dataBase.fetch(otp ? 'phoneNumber' : 'token', identifier)
+    await dataBase.fetch(otp ? 'phonenumber' : 'token', identifier)
       .catch(error => { throw error })
 
   if (Object.keys(fetchResult).length === 0) {
-    if(identifier === 'phoneNumber')
+    console.log(identifier)
+    if(otp !== null)
       return {
-        message: `The user : ${identifier} has not yet registered! -- Cannot verify`
+        authCode: 13,
+        authMessage: `The user : ${identifier} has not yet registered! -- Cannot verify`
       }
     return {
-      message: `The token : ${identifier} is not a valid one(Invalid link) -- Cannot verify`
+      authCode: 23,
+      authMessage: `The token : ${identifier} is not a valid one(Invalid link) -- Cannot verify`
     }
-  } else if (fetchResult.verified)
+  } else if (fetchResult.verified) {
+    const user = fetchResult.email ? fetchResult.email : fetchResult.phonenumber
     return {
-      message: `The user : ${fetchResult[identifier]} has already been registered and verified - User can now Sign In with his/her credentials`
+      authCode: 15,
+      authMessage: `The user : ${user} has already been registered and verified - User can now Sign In with his/her credentials`
     }
+  }
   else {
     const returnObject =
     !otp
@@ -39,11 +45,13 @@ async function takeActionBasedOnLinkExpiration (fetchResult) {
       .catch(error => { throw error })
 
     return {
-      message: `The user has been successfully verified`
+      authCode: 3,
+      authMessage: `The user has been successfully verified`
     }
   } else
     return {
-      message: `The verification link has been expired`
+      authCode: 24,
+      authMessage: `The verification link has been expired`
     }
 }
 
@@ -58,15 +66,18 @@ async function takeActionBasedOnOtpExpiration (fetchResult, otp) {
         .catch(error => { throw error })
 
       return {
-        message: `The user has been successfully verified`
+        authCode: 3,
+        authMessage: `The user has been successfully verified`
       }
     } else
       return {
+        authCode: 24,
         messsage: `The OTP has expired`
       }
   } else
     return {
-      message: `Invalid OTP`
+      authCode: 23,
+      authMessage: `Invalid OTP`
     }
 }
 

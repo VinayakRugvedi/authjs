@@ -6,7 +6,7 @@ const sendOtp = require(`./sendOtp/${config.smsConfiguration.sender}`)
 
 async function signUpVerification (userName, password, flag = false) {
   const userStatus =
-    await isUserRegistered(userName, password, flag)
+    await isUserRegisteredAndVerified(userName, password, flag)
       .catch(error => { throw error })
 
   if (userStatus.isRegistered === false) {
@@ -19,11 +19,12 @@ async function signUpVerification (userName, password, flag = false) {
     return returnObject
   } else if (userStatus.isRegistered === true)
     return {
-      message: userStatus.message
+      authCode: userStatus.authCode,
+      authMessage: userStatus.authMessage
     }
 }
 
-async function isUserRegistered (userName, password, flag) {
+async function isUserRegisteredAndVerified (userName, password, flag) {
   const fetchResult =
     await dataBase.fetch(flag ? 'phonenumber' : 'email', userName)
       .catch(error => { throw error })
@@ -35,12 +36,14 @@ async function isUserRegistered (userName, password, flag) {
     if (!fetchResult.verified)
       return { // User registered but not verified
         isRegistered: true,
-        message: `The user : ${userName} has already registered but not verified!`
+        authCode: 14,
+        authMessage: `The user : ${userName} has already registered but not verified!`
       }
     else
       return {
         isRegistered: true,
-        message: `The user : ${userName} has been registered and verified - User can now Sign In with his/her credentials`
+        authCode: 15,
+        authMessage: `The user : ${userName} has already been registered and verified - User can now Sign In with his/her credentials`
       }
   }
 }
