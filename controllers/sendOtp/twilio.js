@@ -19,7 +19,8 @@ async function sendOtp (phoneNumber, otp) {
 
   return {
     twilioResponse: responseData,
-    message: `The user data is securely stored and the OTP has been sent to ${phoneNumber}`
+    authCode: 3,
+    authMessage: `The user data is securely stored and the OTP has been sent to ${phoneNumber}`
   }
 }
 

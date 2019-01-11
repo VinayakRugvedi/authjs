@@ -15,7 +15,7 @@ async function sendOtp (phoneNumber, otp) {
 
   function sendSms () {
     return new Promise((resolve, reject) => {
-      nexmo.message.sendSms(from, phoneNumber, text,
+      nexmo.authMessage.sendSms(from, phoneNumber, text,
         (error, responseData) => {
           if (error) reject(error)
           else resolve(responseData)
@@ -29,7 +29,8 @@ async function sendOtp (phoneNumber, otp) {
 
   return {
     nexmoResponse: responseData,
-    message: `The user data is securely stored and the OTP has been sent to ${phoneNumber}`
+    authCode: 3,
+    authMessage: `The user data is securely stored and the OTP has been sent to ${phoneNumber}`
   }
 }
 
