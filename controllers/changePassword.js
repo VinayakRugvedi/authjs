@@ -4,12 +4,13 @@ const dataBase = require(`../model/${config.dataBaseConfiguration.dataBase}`)
 
 async function changePassword (userName, newPassword, flag = false) {
   const fetchResult =
-    await dataBase.fetch(flag ? 'phoneNumber' : 'email', userName)
+    await dataBase.fetch(flag ? 'phonenumber' : 'email', userName)
       .catch(error => { throw error })
 
   if (Object.keys(fetchResult).length === 0)
     return {
-      message: `The user : ${userName} has not yet registered!`
+      authCode: 13,
+      authMessage: `The user : ${userName} has not yet registered!`
     }
   else {
     // user info found, update its newPassword by hashing
@@ -21,7 +22,8 @@ async function changePassword (userName, newPassword, flag = false) {
       .catch(error => { throw error })
 
     return {
-      message: `The user's(${userName}) password has been successfully updated`
+      authCode: 3,
+      authMessage: `The user's(${userName}) password has been successfully updated`
     }
   }
 }

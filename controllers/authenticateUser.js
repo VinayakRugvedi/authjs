@@ -10,11 +10,13 @@ async function authenticateUser (userName, password, flag = false) {
 
   if (passwordHash === false)
     return {
-      message: `The user : ${userName} has not yet registered!`
+      authCode: 13,
+      authMessage: `The user : ${userName} has not yet registered!`
     }
   else if (passwordHash === true)
     return {
-      message: `The user : ${userName} has registered but not verified!`
+      authCode: 14,
+      authMessage: `The user : ${userName} has registered but not verified!`
     }
   else if (typeof passwordHash === 'string') {
     const compareResult =
@@ -23,11 +25,13 @@ async function authenticateUser (userName, password, flag = false) {
 
     if (compareResult === false)
       return {
-        message: `The users credentials seems to be incorrect`
+        authCode: 25,
+        authMessage: `The users credentials seems to be incorrect`
       }
     else
       return {
-        message: `The user is successfully authenticated`
+        authCode: 3,
+        authMessage: `The user is successfully authenticated`
       }
   }
 }
