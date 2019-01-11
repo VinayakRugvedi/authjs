@@ -2,20 +2,48 @@ const config = require('../config')
 
 const { Client } = require('pg')
 const connectionString = config.dataBaseConfiguration.connectionString
-const client = new Client(connectionString)
-client.connect()
+const client = new Client(connectionString);
+
+(async function () {
+  await client.connect()
+    .catch(error => {
+      console.log(error)
+      process.exit(0)
+    })
+  console.log('\nSuccessfully connected to the database...\n')
+})();
+
+(async function () {
+  const createTableQuery =
+  `CREATE TABLE IF NOT EXISTS authaccount (
+    _id serial PRIMARY KEY,
+    expires BIGINT NOT NULL,
+    verified BOOLEAN NOT NULL,
+    token CHARACTER (32) UNIQUE NOT NULL,
+    email VARCHAR (355) UNIQUE,
+    password CHARACTER (60) NOT NULL,
+    phonenumber VARCHAR (20) UNIQUE,
+    otp integer
+  )`
+
+  await client.query(createTableQuery)
+    .catch(error => {
+      console.log(error)
+      process.exit(0)
+    })
+})()
 
 // Formulating different queries
 function getInsertQuery (data, flag) {
   let insertQuery
   if (!flag) {
     insertQuery = {
-      text: 'INSERT INTO data(token, email, expires, password, verified) VALUES($1, $2, $3, $4, $5) RETURNING *',
+      text: 'INSERT INTO authaccount(token, email, expires, password, verified) VALUES($1, $2, $3, $4, $5) RETURNING *',
       values: [data.token, data.email, data.expires, data.password, data.verified]
     }
   } else {
     insertQuery = {
-      text: 'INSERT INTO data(token, otp, phoneNumber, expires, password, verified) VALUES($1, $2, $3, $4, $5, $6) RETURNING *',
+      text: 'INSERT INTO authaccount(token, otp, phoneNumber, expires, password, verified) VALUES($1, $2, $3, $4, $5, $6) RETURNING *',
       values: [data.token, data.otp, data.phoneNumber, data.expires, data.password, data.verified]
     }
   }
@@ -24,7 +52,7 @@ function getInsertQuery (data, flag) {
 
 function getFetchQuery (field, value) {
   const fetchQuery = {
-    text: `SELECT * FROM data where ${field} = $1`,
+    text: `SELECT * FROM authaccount where ${field} = $1`,
     values: [value]
   }
   return fetchQuery
@@ -33,7 +61,7 @@ function getFetchQuery (field, value) {
 function getUpdateVerifiedQuery (id) {
   const updateQuery = {
     name: 'set-verified-to-true',
-    text: 'UPDATE data SET verified = true WHERE _id = $1',
+    text: 'UPDATE authaccount SET verified = true WHERE _id = $1',
     values: [id]
   }
   return updateQuery
@@ -42,7 +70,7 @@ function getUpdateVerifiedQuery (id) {
 function getupdateTokenAndExpiresQuery (id, token, expires) {
   const updateQuery = {
     name: 'set-newtoken-newexpires',
-    text: 'UPDATE data SET token = $1, expires = $2 WHERE _id = $3',
+    text: 'UPDATE authaccount SET token = $1, expires = $2 WHERE _id = $3',
     values: [token, expires, id]
   }
   return updateQuery
@@ -51,7 +79,7 @@ function getupdateTokenAndExpiresQuery (id, token, expires) {
 function getupdateOtpAndExpiresQuery (id, otp, expires) {
   const updateQuery = {
     name: 'set-newotp-newexpires',
-    text: 'UPDATE data SET otp = $1, expires = $2 WHERE _id = $3',
+    text: 'UPDATE authaccount SET otp = $1, expires = $2 WHERE _id = $3',
     values: [otp, expires, id]
   }
   return updateQuery
@@ -60,7 +88,7 @@ function getupdateOtpAndExpiresQuery (id, otp, expires) {
 function getUpdatePasswordQuery (password, id) {
   const updateQuery = {
     name: 'set-new-password',
-    text: 'UPDATE data SET password = $1 WHERE _id = $2',
+    text: 'UPDATE authaccount SET password = $1 WHERE _id = $2',
     values: [password, id]
   }
   return updateQuery
@@ -69,7 +97,7 @@ function getUpdatePasswordQuery (password, id) {
 function getDeleteQuery (id) {
   const deleteQuery = {
     name: 'delete-user-data',
-    text: 'DELETE FROM data WHERE _id = $1',
+    text: 'DELETE FROM authaccount WHERE _id = $1',
     values: [id]
   }
   return deleteQuery
@@ -80,7 +108,7 @@ async function insert (data, flag) {
   const insertResult =
     await client.query(insertQuery)
       .catch(error => { throw error })
-  console.log(insertResult, 'Insert Result')
+  console.log(insertResult.rows, 'Insert Result')
   return insertResult
 }
 
@@ -89,8 +117,7 @@ async function fetch (field, value) {
   const fetchResult =
     await client.query(fetchQuery)
       .catch(error => { throw error })
-  console.log(fetchResult, 'Fetch Result')
-  if (fetchResult === undefined) return undefined
+  console.log(fetchResult.rows, 'Fetch Result')
   return fetchResult.rows.length
     ? fetchResult.rows[0]
     : {}
