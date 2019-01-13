@@ -1,6 +1,6 @@
 const cryptoRandomString = require('crypto-random-string')
 
-const authConfig = require('../../../authConfig')
+const authConfig = require('../../../../authConfig')
 const dataBase = require(`../model/${authConfig.dataBaseConfiguration.dataBase}`)
 const sendVerificationLink = require(`./sendVerificationLink/${authConfig.mailConfiguration.mailer}`)
 

@@ -1,4 +1,4 @@
-const authConfig = require('../../../../authConfig')
+const authConfig = require('../../../../../authConfig')
 const apiKey = authConfig.mailConfiguration.apiKey
 const domain = authConfig.mailConfiguration.domain
 

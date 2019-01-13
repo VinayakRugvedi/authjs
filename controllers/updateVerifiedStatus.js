@@ -1,4 +1,4 @@
-const authConfig = require('../../../authConfig')
+const authConfig = require('../../../../authConfig')
 const dataBase = require(`../model/${authConfig.dataBaseConfiguration.dataBase}`)
 
 async function updateVerifiedStatus (identifier, otp = null) {

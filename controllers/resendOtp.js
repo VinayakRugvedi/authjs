@@ -1,6 +1,6 @@
 const otpLib = require('otplib')
 
-const authConfig = require('../../../authConfig')
+const authConfig = require('../../../../authConfig')
 const dataBase = require(`../model/${authConfig.dataBaseConfiguration.dataBase}`)
 const sendOtp = require(`./sendOtp/${authConfig.smsConfiguration.sender}`)
 

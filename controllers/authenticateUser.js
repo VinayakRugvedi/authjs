@@ -1,7 +1,7 @@
 const validator = require('validator')
 const bcrypt = require('bcrypt')
 
-const authConfig = require('../../../authConfig')
+const authConfig = require('../../../../authConfig')
 const dataBase = require(`../model/${authConfig.dataBaseConfiguration.dataBase}`)
 
 async function authenticateUser (userName, password) {

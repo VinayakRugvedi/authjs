@@ -1,4 +1,4 @@
-const authConfig = require('../authConfig')
+const authConfig = require('../../../../authConfig')
 
 const mongoose = require('mongoose')
 const connectionString = authConfig.dataBaseConfiguration.connectionString

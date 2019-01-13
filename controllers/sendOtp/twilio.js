@@ -1,6 +1,6 @@
 const Twilio = require('twilio')
 
-const authConfig = require('../../../../authConfig')
+const authConfig = require('../../../../../authConfig')
 const accountSid = authConfig.smsConfiguration.accountSid
 const authToken = authConfig.smsConfiguration.authToken
 

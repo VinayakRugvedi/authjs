@@ -1,4 +1,4 @@
-const authConfig = require('../authConfig')
+const authConfig = require('../../../../authConfig')
 
 const { Client } = require('pg')
 const connectionString = authConfig.dataBaseConfiguration.connectionString

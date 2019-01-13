@@ -1,6 +1,6 @@
 const validator = require('validator')
 
-const authConfig = require('../../../authConfig')
+const authConfig = require('../../../../authConfig')
 const dataBase = require(`../model/${authConfig.dataBaseConfiguration.dataBase}`)
 const hashPasswordAndFormulateUserObject = require('./hashPasswordAndFormulateUserObject')
 const sendVerificationLink = require(`./sendVerificationLink/${authConfig.mailConfiguration.mailer}`)

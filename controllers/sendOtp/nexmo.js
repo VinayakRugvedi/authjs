@@ -1,6 +1,6 @@
 const Nexmo = require('nexmo')
 
-const authConfig = require('../../../../authConfig')
+const authConfig = require('../../../../../authConfig')
 const apiKey = authConfig.smsConfiguration.apiKey
 const apiSecret = authConfig.smsConfiguration.apiSecret
 
