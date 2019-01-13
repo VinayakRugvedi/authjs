@@ -10,7 +10,7 @@ npm install authjs
 **Set up your [authConfig file](https://github.com/VinayakRugvedi/authjs/blob/master/authConfig.js) which is the driving force for all the magics of authjs!**                                                                                                      
 **For more detailed information on authConfig file, [navigate here...](https://github.com/VinayakRugvedi/authjs/blob/master/authConfig.js)**
 
-### What authjs does for you..?
+### What does authjs do for you..?
 Authentication!!!
 Well, on an abstract note, authjs provides you with some async functions to achieve the following :
 
@@ -22,6 +22,19 @@ Well, on an abstract note, authjs provides you with some async functions to achi
 
 * To take in the email-address/phone-number(user-name) along with the password during signIn and authenticate the user based on the credentials provided against the information available on the data base.
 
+### Why authConfig file..?
+As told earlier, it's the driving force as it holds all of your choices and it's desired
+configurations.
+So, authjs as of now offers you two choices for the data base :
+* mongodb
+* postgresql
+Two choices for the mailer, in order to send the verification link :
+* mailgun
+* sendgrid
+And two choices for the sender, in order to send the OTP :
+* nexmo
+* twilio
+[Click here for more detailed information]() 
 
 ### What does authjs provide you..?
 **All the functions provided by authjs returns a promise and always consumes arguments of type string**
