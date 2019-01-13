@@ -28,8 +28,8 @@ Well, on an abstract note, authjs provides you with some async functions to achi
 
 
 ### What does authjs provide you..?
-As of now, authjs provides you the following functions
-**All these functions returns a promise and always consumes arguments of type string**
+**All the functions provided by authjs returns a promise and always consumes arguments of type string**
+The following represents the set of functions available as of now...
 
 ```javascript
 // Email :
@@ -57,6 +57,31 @@ auth.resendOtp('+91XXXXXXXXXX')
 auth.changePassword('yourname@example.com', '123password321')
 // Phone Number :
 auth.changePassword('+91XXXXXXXXXX', '123password321')
+```
+
+Example usage : 
+```javascript
+auth.signUp('yourname@example.com', '123password321')
+  .then(authObject => {
+    console.log(authObject)
+    . . . . .
+    // Do something based on the authCode
+    // authObject.authCode
+    . . . . .
+   })
+   .catch(error => console.log(error))
+   
+   OR
+   
+ async function someHandler() {
+  let authObject = 
+    await auth.signUp('yourname@example.com', '123password321')
+      .catch(error => console.log(error))
+  . . . . .
+  // Do something based on the authCode
+  // authObject.authCode
+  . . . . .
+ }
 ```
 
 
