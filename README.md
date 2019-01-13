@@ -53,9 +53,9 @@ auth.resendVerificationLink('yourname@example.com')
 auth.resendOtp('+91XXXXXXXXXX')
 
 // Email :
-auth.changePassword('yourname@example.com', '123password321')
+auth.changePassword('yourname@example.com', '123newpassword321')
 // Phone Number :
-auth.changePassword('+91XXXXXXXXXX', '123password321')
+auth.changePassword('+91XXXXXXXXXX', '123newpassword321')
 ```
 
 Example usage : 
