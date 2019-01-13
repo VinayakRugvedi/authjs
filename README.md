@@ -1,6 +1,4 @@
 # authjs
-<<<<<<< HEAD
-=======
 
 The ultimate library for performing authentication on nodeJS! -
 Manages signUp(creation of user accounts), verification(verification link to email or an OTP to a phone number) and signIn...
@@ -88,7 +86,12 @@ auth.signUp('yourname@example.com', '123password321')
  }
 ```
 
+When the promise gets resolved, you get an authObject with the underlying api's response, if any,
+along with authCode and authMessage which gives a clear understanding of what happened...
+Based on the authCode, you can direct your flow appropriately...
 
+The following table summarizes all the possible authCodes which may arise at different scenarios :
 
-
->>>>>>> refs/remotes/origin/master
+authCode | meaning
+-------- | -------
+3 | The respective function call succeeded completely
