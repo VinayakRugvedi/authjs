@@ -43,6 +43,7 @@ And two choices for the sender, in order to send the OTP :
 
 ### What does authjs provide you..?
 **All the functions provided by authjs returns a promise and always consumes arguments of type string**
+
 The following represents the set of functions available as of now...
 
 ```javascript
