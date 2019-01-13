@@ -61,6 +61,8 @@ auth.changePassword('+91XXXXXXXXXX', '123password321')
 
 Example usage : 
 ```javascript
+const auth = require('authjs')
+
 auth.signUp('yourname@example.com', '123password321')
   .then(authObject => {
     console.log(authObject)
@@ -71,7 +73,7 @@ auth.signUp('yourname@example.com', '123password321')
    })
    .catch(error => console.log(error))
    
-   OR
+ // OR using async-await
    
  async function someHandler() {
   let authObject = 
