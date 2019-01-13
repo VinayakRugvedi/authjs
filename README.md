@@ -25,16 +25,20 @@ Well, on an abstract note, authjs provides you with some async functions to achi
 ### Why authConfig file..?
 As told earlier, it's the driving force as it holds all of your choices and it's desired
 configurations.
+
 So, authjs as of now offers you two choices for the data base :
 * mongodb
 * postgresql
+
 Two choices for the mailer, in order to send the verification link :
 * mailgun
 * sendgrid
+
 And two choices for the sender, in order to send the OTP :
 * nexmo
 * twilio
-[Click here for more detailed information]() 
+
+[Click here for more detailed information](https://github.com/VinayakRugvedi/authjs/blob/master/authConfig.js)
 
 ### What does authjs provide you..?
 **All the functions provided by authjs returns a promise and always consumes arguments of type string**
