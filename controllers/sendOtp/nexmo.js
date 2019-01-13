@@ -1,21 +1,27 @@
 const Nexmo = require('nexmo')
 
-const config = require('../../config')
-const apiKey = config.smsConfiguration.apiKey
-const apiSecret = config.smsConfiguration.apiSecret
+const authConfig = require('../../../../authConfig')
+const apiKey = authConfig.smsConfiguration.apiKey
+const apiSecret = authConfig.smsConfiguration.apiSecret
 
 const nexmo = new Nexmo({
   apiKey,
   apiSecret
 })
 
-async function sendOtp (phoneNumber, otp) {
-  const text = `Hello, your OTP is : ${otp}`
-  const from = config.smsConfiguration.from
+async function sendOtp (phone, otp) {
+  let organizationName = 'TESTING'
+  if (authConfig.smsConfiguration.organizationName !== undefined &&
+      authConfig.smsConfiguration.organizationName.length !== 0) {
+    organizationName = authConfig.smsConfiguration.organizationName
+  }
+
+  const text = `Hello, your OTP is : ${otp} - ${organizationName}`
+  const from = authConfig.smsConfiguration.from
 
   function sendSms () {
     return new Promise((resolve, reject) => {
-      nexmo.authMessage.sendSms(from, phoneNumber, text,
+      nexmo.authMessage.sendSms(from, phone, text,
         (error, responseData) => {
           if (error) reject(error)
           else resolve(responseData)
@@ -30,7 +36,7 @@ async function sendOtp (phoneNumber, otp) {
   return {
     nexmoResponse: responseData,
     authCode: 3,
-    authMessage: `The user data is securely stored and the OTP has been sent to ${phoneNumber}`
+    authMessage: `The user data is securely stored and the OTP has been sent to ${phone}`
   }
 }
 
