@@ -95,3 +95,9 @@ The following table summarizes all the possible authCodes which may arise at dif
 authCode | meaning
 -------- | -------
 3 | The respective function call succeeded completely
+13 | The user-name(email-address/phone-number) in concern has not yet registered
+14 | The user-name(email-address/phone-number) in concern has registered but not verified
+15 | The user-name(email-address/phone-number) in concern has registered and is verified
+23 | Invalid link/OTP
+24 | Link/OTP has expired
+25 | The users credentials are incorrect
