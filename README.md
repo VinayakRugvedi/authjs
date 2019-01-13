@@ -21,8 +21,6 @@ Well, on an abstract note, authjs provides you with some async functions to achi
 * To help you verify the user successfully when the verification link is clicked or when the OTP is provided.
 
 * To take in the email-address/phone-number(user-name) along with the password during signIn and authenticate the user based on the credentials provided against the information available on the data base.
-<<<<<<< HEAD
-=======
 
 
 ### What does authjs provide you..?
@@ -57,7 +55,7 @@ auth.changePassword('yourname@example.com', '123newpassword321')
 auth.changePassword('+91XXXXXXXXXX', '123newpassword321')
 ```
 
-Example usage : 
+Example usage :
 ```javascript
 const auth = require('authjs')
 
@@ -70,11 +68,11 @@ auth.signUp('yourname@example.com', '123password321')
     . . . . .
    })
    .catch(error => console.log(error))
-   
+
  // OR using async-await
-   
+
  async function someHandler() {
-  let authObject = 
+  let authObject =
     await auth.signUp('yourname@example.com', '123password321')
       .catch(error => console.log(error))
   . . . . .
@@ -83,7 +81,7 @@ auth.signUp('yourname@example.com', '123password321')
   . . . . .
  }
 ```
-authjs has a good amount of logs and throws simple, user understandable exceptions at times which makes it elegant to use! 
+authjs has a good amount of logs and throws simple, user understandable exceptions at times which makes it elegant to use!
 
 When the promise gets resolved, you get an authObject with an underlying api's response, if any,
 along with authCode and authMessage which gives a clear understanding of what happened...
@@ -103,4 +101,3 @@ authCode | meaning
 25 | The users credentials are incorrect
 
 Suggestions, queries and appreciations are welcome! :-)
->>>>>>> refs/remotes/origin/master
