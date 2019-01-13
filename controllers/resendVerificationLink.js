@@ -1,8 +1,8 @@
 const cryptoRandomString = require('crypto-random-string')
 
-const config = require('../config')
-const dataBase = require(`../model/${config.dataBaseConfiguration.dataBase}`)
-const sendVerificationLink = require(`./sendVerificationLink/${config.mailConfiguration.mailer}`)
+const authConfig = require('../../../authConfig')
+const dataBase = require(`../model/${authConfig.dataBaseConfiguration.dataBase}`)
+const sendVerificationLink = require(`./sendVerificationLink/${authConfig.mailConfiguration.mailer}`)
 
 async function resendVerificationLink (email) {
   const userData =
@@ -23,7 +23,7 @@ async function resendVerificationLink (email) {
 
     const token = cryptoRandomString(32)
     const date = new Date()
-    const expires = date.setUTCHours(date.getUTCHours() + 2)
+    const expires = date.setUTCHours(date.getUTCHours() + 12)
     await dataBase.updateTokenAndExpires(userData._id, token, expires)
       .catch(error => { throw error })
     // Successfull updation
