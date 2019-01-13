@@ -1,6 +1,6 @@
 {
   "name": "@vinayakrugvedi/authjs",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "The ultimate library for performing authentication on nodeJS",
   "main": "authjs.js",
   "scripts": {
