@@ -12,6 +12,7 @@ npm install authjs
 
 ### What does authjs do for you..?
 Authentication!!!
+
 Well, on an abstract note, authjs provides you with some async functions to achieve the following :
 
 * To take in the email-address/phone-number(user-name) along with the password during signUp(registration) and store it on the data base of your choice(as specified in the authConfig file) by hashing the password.
