@@ -1,2 +1,5 @@
 #Build dependencies
 /node_modules
+
+#My configuraton secrets
+/secret.txt
