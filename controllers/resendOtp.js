@@ -1,24 +1,24 @@
 const otpLib = require('otplib')
 
-const config = require('../config')
-const dataBase = require(`../model/${config.dataBaseConfiguration.dataBase}`)
-const sendOtp = require(`./sendOtp/${config.smsConfiguration.sender}`)
+const authConfig = require('../../../authConfig')
+const dataBase = require(`../model/${authConfig.dataBaseConfiguration.dataBase}`)
+const sendOtp = require(`./sendOtp/${authConfig.smsConfiguration.sender}`)
 
-async function resendOtp (phoneNumber) {
+async function resendOtp (phone) {
   const userData =
-    await dataBase.fetch('phonenumber', phoneNumber)
+    await dataBase.fetch('phone', phone)
       .catch(error => { throw error })
 
   if (Object.keys(userData).length === 0)
     return {
       authCode: 13,
-      authMessage: `The user : ${phoneNumber} has not yet registered!`
+      authMessage: `The user : ${phone} has not yet registered!`
     }
   else {
     if (userData.verified === true)
       return {
         authCode: 15,
-        authMessage: `The user : ${phoneNumber} has already been verified!`
+        authMessage: `The user : ${phone} has already been verified!`
       }
 
     const otp = otpLib.authenticator.generate(userData.token)
@@ -29,10 +29,10 @@ async function resendOtp (phoneNumber) {
       .catch(error => { throw error })
 
     const returnObject =
-      await sendOtp(userData.phonenumber, otp)
+      await sendOtp(userData.phone, otp)
         .catch(error => { throw error })
 
-    returnObject.authMessage = `The OTP has been resent to : ${phoneNumber}`
+    returnObject.authMessage = `The OTP has been resent to : ${phone}`
     return returnObject
   }
 }
