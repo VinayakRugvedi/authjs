@@ -1,5 +1,5 @@
 try {
-  const authConfig = require('./config')
+  const authConfig = require('../../authConfig')
   if(authConfig.dataBaseConfiguration === undefined) throw 1
   if(authConfig.dataBaseConfiguration.dataBase === undefined ||
       authConfig.dataBaseConfiguration.dataBase.length === 0) throw 2
