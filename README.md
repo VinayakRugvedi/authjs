@@ -1,15 +1,18 @@
 # authjs
 
-The ultimate package for authentication on nodeJS! -
+The ultimate library for performing authentication on nodeJS! -
 Manages signUp(creation of user accounts), verification(verification link to email or an OTP to a phone number) and signIn...
+
 
 ### Installation
 npm install authjs
+
 
 ### Prerequisite
 **Set up your [authConfig file](https://github.com/VinayakRugvedi/authjs/blob/master/authConfig.js) which is the driving force for all the magics of authjs!**
 
 **For more detailed information on authConfig file, [navigate here...](https://github.com/VinayakRugvedi/authjs/blob/master/authConfig.js)**
+
 
 ### What authjs does for you..?
 Authentication!!!
@@ -22,6 +25,39 @@ Well, on an abstract note, authjs provides you with some async functions to achi
 * To help you verify the user successfully when the verification link is clicked or when the OTP is provided.
 
 * To take in the email-address/phone-number(user-name) along with the password during signIn and authenticate the user based on the credentials provided against the information available on the data base.
+
+
+### What does authjs provide you..?
+As of now, authjs provides you the following functions
+**All these functions returns a promise and always consumes arguments of type string**
+
+```javascript
+// Email :
+auth.signUp('yourname@example.com', '123password321')
+// Phone Number :
+auth.signUp('+91XXXXXXXXXX', '123password321')
+
+
+// Email :
+auth.verify(token) // token is 32 characters long
+// Phone Number :
+auth.verify('+91XXXXXXXXXX', '123456') // 123456 is the OTP
+
+// Email :
+auth.signIn('yourname@example.com', '123password321')
+// Phone Number :
+auth.signIn('+91XXXXXXXXXX', '123password321')
+
+// Email :
+auth.resendVerificationLink('yourname@example.com')
+// Phone Number :
+auth.resendOtp('+91XXXXXXXXXX')
+
+// Email :
+auth.changePassword('yourname@example.com', '123password321')
+// Phone Number :
+auth.changePassword('+91XXXXXXXXXX', '123password321')
+```
 
 
 
