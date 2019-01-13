@@ -1,7 +1,7 @@
 {
   "name": "authjs",
   "version": "1.0.0",
-  "description": "The ultimate package for authentication on nodeJS",
+  "description": "The ultimate library for performing authentication on nodeJS",
   "main": "authjs.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
