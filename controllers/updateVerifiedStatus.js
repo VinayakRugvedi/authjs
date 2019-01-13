@@ -1,13 +1,23 @@
-const config = require('../config')
-const dataBase = require(`../model/${config.dataBaseConfiguration.dataBase}`)
+const authConfig = require('../../../authConfig')
+const dataBase = require(`../model/${authConfig.dataBaseConfiguration.dataBase}`)
 
 async function updateVerifiedStatus (identifier, otp = null) {
+  if (validator.isMobilePhone(identifier, 'any', { strictMode: true })) {
+    if(otp === null)
+      throw new Error (
+        `
+          *******************************************************************************
+          You need to pass an OTP too along with the phoneNumber in order to verify
+          i.e auth.verify(phoneNumber, otp)
+          *******************************************************************************
+        `)
+  }
+
   const fetchResult =
-    await dataBase.fetch(otp ? 'phonenumber' : 'token', identifier)
+    await dataBase.fetch(otp ? 'phone' : 'token', identifier)
       .catch(error => { throw error })
 
   if (Object.keys(fetchResult).length === 0) {
-    console.log(identifier)
     if(otp !== null)
       return {
         authCode: 13,
@@ -18,7 +28,7 @@ async function updateVerifiedStatus (identifier, otp = null) {
       authMessage: `The token : ${identifier} is not a valid one(Invalid link) -- Cannot verify`
     }
   } else if (fetchResult.verified) {
-    const user = fetchResult.email ? fetchResult.email : fetchResult.phonenumber
+    const user = fetchResult.email ? fetchResult.email : fetchResult.phone
     return {
       authCode: 15,
       authMessage: `The user : ${user} has already been registered and verified - User can now Sign In with his/her credentials`
@@ -46,7 +56,7 @@ async function takeActionBasedOnLinkExpiration (fetchResult) {
 
     return {
       authCode: 3,
-      authMessage: `The user has been successfully verified`
+      authMessage: `The user : ${fetchResult.email} has been successfully verified`
     }
   } else
     return {
@@ -67,7 +77,7 @@ async function takeActionBasedOnOtpExpiration (fetchResult, otp) {
 
       return {
         authCode: 3,
-        authMessage: `The user has been successfully verified`
+        authMessage: `The user : ${fetchResult.phone} has been successfully verified`
       }
     } else
       return {
