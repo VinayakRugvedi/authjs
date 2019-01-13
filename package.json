@@ -1,8 +1,8 @@
 {
   "name": "authjs",
   "version": "1.0.0",
-  "description": "A simple package for verification and authentication on nodeJS",
-  "main": "auth.js",
+  "description": "The ultimate package for authentication on nodeJS",
+  "main": "authjs.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -11,22 +11,31 @@
     "url": "git+https://github.com/VinayakRugvedi/authjs.git"
   },
   "keywords": [
-    "verification",
+    "auth",
+    "authjs",
+    "verify",
     "authentication",
+    "verification",
+    "otp",
     "postgresql",
     "mongodb",
     "mailgun",
-    "sendgrid"
+    "sendgrid",
+    "nexmo",
+    "twilio"
   ],
   "author": "A Vinayak Rugvedi",
   "license": "ISC",
   "dependencies": {
     "@sendgrid/mail": "^6.3.1",
-    "bcrypt": "^2.0.0",
+    "bcryptjs": "^2.4.3",
     "crypto-random-string": "^1.0.0",
     "mailgun-js": "^0.22.0",
     "mongoose": "^5.4.0",
+    "nexmo": "^2.4.0",
+    "otplib": "^10.0.1",
     "pg": "^7.7.1",
+    "twilio": "^3.26.0",
     "validator": "^10.9.0"
   },
   "bugs": {
