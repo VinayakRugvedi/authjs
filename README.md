@@ -85,10 +85,12 @@ auth.signUp('yourname@example.com', '123password321')
   . . . . .
  }
 ```
+authjs has a good amount of logs and throws simple, user understandable exceptions at times which makes it elegant to use! 
 
-When the promise gets resolved, you get an authObject with the underlying api's response, if any,
+When the promise gets resolved, you get an authObject with an underlying api's response, if any,
 along with authCode and authMessage which gives a clear understanding of what happened...
-Based on the authCode, you can direct your flow appropriately...
+(In most of the cases, authObject consists of only authCode and authMessage)
+Based on the authCode, you can decide what to do next...
 
 The following table summarizes all the possible authCodes which may arise at different scenarios :
 
@@ -101,3 +103,5 @@ authCode | meaning
 23 | Invalid link/OTP
 24 | Link/OTP has expired
 25 | The users credentials are incorrect
+
+Suggestions, queries and appreciations are welcome! :-)
