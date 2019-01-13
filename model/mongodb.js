@@ -1,7 +1,7 @@
-const config = require('../config')
+const authConfig = require('../authConfig')
 
 const mongoose = require('mongoose')
-const connectionString = config.dataBaseConfiguration.connectionString
+const connectionString = authConfig.dataBaseConfiguration.connectionString
 
 mongoose.connect(connectionString, {
   useNewUrlParser: true,
@@ -19,7 +19,7 @@ const UserDataSchema = new mongoose.Schema({
   expires: Number,
   email: String,
   otp: Number,
-  phonenumber: String,
+  phone: String,
   password: {
     type: String,
     required: true,
@@ -44,8 +44,8 @@ db.once('open', () => {
   console.log('\nSuccessfully connected to the database...\n')
 })
 
-function getInsertInfo (data, flag) {
-  if (!flag) {
+function getInsertInfo (data, isPhone) {
+  if (!isPhone) {
     return new AuthAccount({
       token: data.token,
       expires: data.expires,
@@ -58,15 +58,15 @@ function getInsertInfo (data, flag) {
       token: data.token,
       expires: data.expires,
       otp: data.otp,
-      phonenumber: data.phoneNumber,
+      phone: data.phone,
       password: data.password,
       verified: data.verified
     })
   }
 }
 
-async function insert (data, flag) {
-  let info = getInsertInfo(data, flag)
+async function insert (data, isPhone) {
+  let info = getInsertInfo(data, isPhone)
   let insertResult =
     await info.save()
       .catch(error => { throw error })

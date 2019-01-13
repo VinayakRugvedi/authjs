@@ -1,7 +1,7 @@
-const config = require('../config')
+const authConfig = require('../authConfig')
 
 const { Client } = require('pg')
-const connectionString = config.dataBaseConfiguration.connectionString
+const connectionString = authConfig.dataBaseConfiguration.connectionString
 const client = new Client(connectionString);
 
 (async function () {
@@ -22,7 +22,7 @@ const client = new Client(connectionString);
     token CHARACTER (32) UNIQUE NOT NULL,
     email VARCHAR (355) UNIQUE,
     password CHARACTER (60) NOT NULL,
-    phonenumber VARCHAR (20) UNIQUE,
+    phone VARCHAR (20) UNIQUE,
     otp integer
   )`
 
@@ -34,17 +34,17 @@ const client = new Client(connectionString);
 })()
 
 // Formulating different queries
-function getInsertQuery (data, flag) {
+function getInsertQuery (data, isPhone) {
   let insertQuery
-  if (!flag) {
+  if (!isPhone) {
     insertQuery = {
       text: 'INSERT INTO authaccount(token, email, expires, password, verified) VALUES($1, $2, $3, $4, $5) RETURNING *',
       values: [data.token, data.email, data.expires, data.password, data.verified]
     }
   } else {
     insertQuery = {
-      text: 'INSERT INTO authaccount(token, otp, phoneNumber, expires, password, verified) VALUES($1, $2, $3, $4, $5, $6) RETURNING *',
-      values: [data.token, data.otp, data.phoneNumber, data.expires, data.password, data.verified]
+      text: 'INSERT INTO authaccount(token, otp, phone, expires, password, verified) VALUES($1, $2, $3, $4, $5, $6) RETURNING *',
+      values: [data.token, data.otp, data.phone, data.expires, data.password, data.verified]
     }
   }
   return insertQuery
@@ -103,8 +103,8 @@ function getDeleteQuery (id) {
   return deleteQuery
 }
 
-async function insert (data, flag) {
-  const insertQuery = getInsertQuery(data, flag)
+async function insert (data, isPhone) {
+  const insertQuery = getInsertQuery(data, isPhone)
   const insertResult =
     await client.query(insertQuery)
       .catch(error => { throw error })
