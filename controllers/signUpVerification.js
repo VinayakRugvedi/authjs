@@ -21,12 +21,103 @@ if (authConfig.mailConfiguration === undefined) {
         https://github.com/VinayakRugvedi/authjs/blob/master/authConfig.js
         ********************************************************************************
       `)
-  } else
-      sendOtp = require(`./sendOtp/${authConfig.smsConfiguration.sender}`)
+  } else {
+    if (authConfig.smsConfiguration.sender === undefined ||
+        authConfig.smsConfiguration.sender.length === 0) {
+      throw new Error(
+        `
+        ********************************************************************************
+        'sender' field is essential with a valid value(nexmo or twilio) in the
+        'smsConfiguration' of the 'authConfig' file
+        For more detailed information regarding the 'sender' and the 'authConfig' file,
+        navigate to :
+        https://github.com/VinayakRugvedi/authjs/blob/master/authConfig.js
+        ********************************************************************************
+        `)
+    }
+
+    if (authConfig.smsConfiguration.sender !== 'nexmo' &&
+        authConfig.smsConfiguration.sender !== 'twilio') {
+      throw new Error(
+        `
+          *******************************************************************************
+          As of now, the 'sender' field of 'smsConfiguration' can have either of the two
+          values : 'nexmo' or 'twilio'
+
+          ${authConfig.smsConfiguration.sender} is not a valid value...
+          *******************************************************************************
+        `)
+    }
+
+    sendOtp = require(`./sendOtp/${authConfig.smsConfiguration.sender}`)
+  }
 } else {
+  if (authConfig.mailConfiguration.mailer === undefined ||
+      authConfig.mailConfiguration.mailer.length === 0) {
+    throw new Error(
+      `
+      ********************************************************************************
+      'mailer' field is essential with a valid value(mailgun or sendgrid) in the
+      'mailConfiguration' of the 'authConfig' file
+
+      If you are using only the 'smsConfiguration', kindly comment out the
+      'mailConfiguration'!
+
+      For more detailed information regarding the 'mailer' and the 'authConfig' file,
+      navigate to :
+      https://github.com/VinayakRugvedi/authjs/blob/master/authConfig.js
+      ********************************************************************************
+      `)
+  }
+
+  if (authConfig.mailConfiguration.mailer !== 'mailgun' &&
+      authConfig.mailConfiguration.mailer !== 'sendgrid') {
+    throw new Error(
+      `
+        *******************************************************************************
+        As of now, the 'mailer' field of 'mailConfiguration' can have either of the two
+        values : 'mailgun' or 'sendgrid'
+
+        ${authConfig.mailConfiguration.mailer} is not a valid value...
+        *******************************************************************************
+      `)
+  }
+
     sendVerificationLink = require(`./sendVerificationLink/${authConfig.mailConfiguration.mailer}`)
-    if (authConfig.smsConfiguration !== undefined)
+    if (authConfig.smsConfiguration !== undefined) {
+      if (authConfig.smsConfiguration.sender === undefined ||
+          authConfig.smsConfiguration.sender.length === 0) {
+        throw new Error(
+          `
+          ********************************************************************************
+          'sender' field is essential with a valid value(nexmo or twilio) in the
+          'smsConfiguration' of the 'authConfig' file
+
+          If you are using only the 'mailConfiguration', kindly comment out the
+          'smsConfiguration'!
+
+          For more detailed information regarding the 'sender' and the 'authConfig' file,
+          navigate to :
+          https://github.com/VinayakRugvedi/authjs/blob/master/authConfig.js
+          ********************************************************************************
+          `)
+      }
+
+      if (authConfig.smsConfiguration.sender !== 'nexmo' &&
+          authConfig.smsConfiguration.sender !== 'twilio') {
+        throw new Error(
+          `
+            *******************************************************************************
+            As of now, the 'sender' field of 'smsConfiguration' can have either of the
+            two values : 'nexmo' or 'twilio'
+
+            ${authConfig.smsConfiguration.sender} is not a valid value...
+            *******************************************************************************
+          `)
+      }
+
       sendOtp = require(`./sendOtp/${authConfig.smsConfiguration.sender}`)
+    }
 }
 
 async function signUpVerification (userName, password) {
