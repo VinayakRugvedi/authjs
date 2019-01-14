@@ -39,15 +39,22 @@ And two choices for the sender, in order to send the OTP :
 * nexmo
 * twilio
 
+Having the *dataBaseConfiguration* is mandatory  
+
+You can either choose to have the *mailConfiguration* or the *smsConfiguration* or both of them based on the kind of user-names(email-address/phone-number) you are willing to encourage
+
+
 [Click here for more detailed information](https://github.com/VinayakRugvedi/authjs/blob/master/authConfig.js)
 
 ### What does authjs provide you..?
 **All the functions provided by authjs returns a promise and always consumes arguments of type string**
 
 The following represents the set of functions available as of now...                     
-Make sure you pass the email and phone number in the right format                        
+**Make sure you pass the email and phone number in the right format                      
+
 Phone number format : (+)(country code)(phone number including area code), with no
-special characters apart from '+'
+special characters apart from '+'**                                                      
+
 Example : +91XXXXXXXXXX
 The following will be considered invalid : (91) XXXXXXXXXX, +91 XXX-XXXX-XXX, +91 (XXX)XXXX(XXX)...
 
@@ -78,6 +85,11 @@ auth.changePassword('yourname@example.com', '123newpassword321')
 // Phone Number :
 auth.changePassword('+91XXXXXXXXXX', '123newpassword321')
 ```
+
+Based on the configurations you chosse in the *authConfig* file, you may either be provided with `auth.resendVerificationLink('yourname@example.com')` or `auth.resendOtp('+91XXXXXXXXXX')` or both if you choose too!
+
+**I recommend you to have both, mailConfiguration and smsConfiguration as it provides much more flexibilty/choice for the users registering with you**
+
 
 Example usage :
 ```javascript
@@ -123,5 +135,6 @@ authCode | meaning
 23 | Invalid link/OTP
 24 | Link/OTP has expired
 25 | The users credentials are incorrect
+
 
 Suggestions, queries and appreciations are welcome! :-)
