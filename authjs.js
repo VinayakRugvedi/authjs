@@ -1,12 +1,14 @@
 try {
   const authConfig = require('../../../authConfig')
-  if(authConfig.dataBaseConfiguration === undefined) throw 1
-  if(authConfig.dataBaseConfiguration.dataBase === undefined ||
+  if (authConfig.dataBaseConfiguration === undefined) throw 1
+  if (authConfig.dataBaseConfiguration.dataBase === undefined ||
       authConfig.dataBaseConfiguration.dataBase.length === 0) throw 2
-  if(authConfig.dataBaseConfiguration.connectionString === undefined ||
+  if (authConfig.dataBaseConfiguration.connectionString === undefined ||
       authConfig.dataBaseConfiguration.connectionString.length === 0) throw 3
+  if (authConfig.dataBaseConfiguration.dataBase !== 'postgresql' &&
+      authConfig.dataBaseConfiguration.dataBase !== 'mongodb') throw 4
 } catch(error) {
-  if(error === 1) {
+  if (error === 1) {
     throw new ReferenceError(
       `
         **********************************************************************************
@@ -18,7 +20,7 @@ try {
       `)
   }
 
-  if(error === 2) {
+  if (error === 2) {
     throw new Error(
       `
         **********************************************************************************
@@ -31,7 +33,7 @@ try {
       `)
   }
 
-  if(error === 3) {
+  if (error === 3) {
     throw new Error(
       `
         **********************************************************************************
@@ -41,6 +43,18 @@ try {
         For more detailed information, navigate to :
         https://github.com/VinayakRugvedi/authjs/blob/master/authConfig.js
         **********************************************************************************
+      `)
+  }
+
+  if (error === 4) {
+    throw new Error(
+      `
+        *******************************************************************************
+        As of now, the 'dataBase' field of 'dataBaseConfiguration' can have either of
+        the two values : 'postgresql' or 'mongodb'
+
+        ${authConfig.dataBaseConfiguration.dataBase} is not a valid value...
+        *******************************************************************************
       `)
   }
 
@@ -60,19 +74,33 @@ try {
 }
 
 const signUpVerification = require('./controllers/signUpVerification')
-const resendVerificationLink = require('./controllers/resendVerificationLink')
-const resendOtp = require('./controllers/resendOtp')
+
+let resendOtp, resendVerificationLink
+if (authConfig.mailConfiguration.mailer === undefined ||
+    authConfig.mailConfiguration.mailer.length === 0) {
+  resendOtp = require('./controllers/resendOtp')
+} else {
+  resendVerificationLink = require('./controllers/resendVerificationLink')
+  if (authConfig.mailConfiguration.mailer !== undefined &&
+      authConfig.mailConfiguration.mailer.length !== 0)
+    resendOtp = require('./controllers/resendOtp')
+}
+
 const updateVerifiedStatus = require('./controllers/updateVerifiedStatus')
 const authenticateUser = require('./controllers/authenticateUser')
 const changePassword = require('./controllers/changePassword')
 
 const authjs = {
   signUp: signUpVerification, // Arguments : (email or phone number), password
-  resendVerificationLink, // Arguments : email
-  resendOtp, // Arguments : Phone Number
   verify: updateVerifiedStatus, // Arguments : token or (phoneNumber, otp)
   signIn: authenticateUser, // Arguments : (email or phone number), password
   changePassword // Arguments : (email or phone number), newPassword
+}
+
+if (resendVerificationLink === undefined) authjs.resendOtp = resendOtp  // Arguments : Phone Number
+else {
+  authjs.resendVerificationLink = resendVerificationLink // Arguments : email
+  if (resendOtp !== undefined) authjs.resendOtp = resendOtp
 }
 
 module.exports = authjs
