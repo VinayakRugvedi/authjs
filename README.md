@@ -51,7 +51,6 @@ You can either choose to have the *mailConfiguration* or the *smsConfiguration* 
 
 The following represents the set of functions available as of now...                     
 **Make sure you pass the email and phone number in the right format                      
-
 Phone number format : (+)(country code)(phone number including area code), with no
 special characters apart from '+'**                                                      
 
