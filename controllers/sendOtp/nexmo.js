@@ -16,8 +16,23 @@ async function sendOtp (phone, otp) {
     organizationName = authConfig.smsConfiguration.organizationName
   }
 
+  let from
+  if (authConfig.smsConfiguration.from === undefined ||
+     authConfig.smsConfiguration.from.length === 0) {
+    throw new ReferenceError(
+      `
+        **********************************************************************************
+        'from' field is essential with a valid value in the 'smsConfiguration' of
+        'authConfig' file
+        For more detailed information regarding the 'from' and the 'authConfig' file
+        navigate to here :
+        https://github.com/VinayakRugvedi/authjs/blob/master/authConfig.js
+        **********************************************************************************
+      `)
+  }
+  from = authConfig.mailConfiguration.from
+  
   const text = `Hello, your OTP is : ${otp} - ${organizationName}`
-  const from = authConfig.smsConfiguration.from
 
   function sendSms () {
     return new Promise((resolve, reject) => {

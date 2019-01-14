@@ -13,7 +13,22 @@ async function sendOtp (phone, otp) {
     organizationName = authConfig.smsConfiguration.organizationName
   }
 
-  const from = authConfig.smsConfiguration.from
+  let from
+  if (authConfig.smsConfiguration.from === undefined ||
+     authConfig.smsConfiguration.from.length === 0) {
+    throw new ReferenceError(
+      `
+        **********************************************************************************
+        'from' field is essential with a valid value in the 'smsConfiguration' of
+        'authConfig' file
+        For more detailed information regarding the 'from' and the 'authConfig' file
+        navigate to here :
+        https://github.com/VinayakRugvedi/authjs/blob/master/authConfig.js
+        **********************************************************************************
+      `)
+  }
+  from = authConfig.mailConfiguration.from
+
   // [+][country code][phone number including area code]sms
   const responseData =
     await twilio.messages.create({
