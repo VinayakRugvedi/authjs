@@ -1,5 +1,5 @@
 const validator = require('validator')
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcryptjs')
 
 const authConfig = require('../../../../authConfig')
 const dataBase = require(`../model/${authConfig.dataBaseConfiguration.dataBase}`)
