@@ -44,14 +44,19 @@ And two choices for the sender, in order to send the OTP :
 ### What does authjs provide you..?
 **All the functions provided by authjs returns a promise and always consumes arguments of type string**
 
-The following represents the set of functions available as of now...
+The following represents the set of functions available as of now...                     
+Make sure you pass the email and phone number in the right format                        
+Phone number format : (+)(country code)(phone number including area code), with no
+special characters apart from '+'
+Example : +91XXXXXXXXXX
+The following will be considered invalid : (91) XXXXXXXXXX, +91 XXX-XXXX-XXX, +91 (XXX)XXXX(XXX)...
+
 
 ```javascript
 // Email :
 auth.signUp('yourname@example.com', '123password321')
 // Phone Number :
 auth.signUp('+91XXXXXXXXXX', '123password321')
-
 
 // Email :
 auth.verify(token) // token is 32 characters long
@@ -76,7 +81,7 @@ auth.changePassword('+91XXXXXXXXXX', '123newpassword321')
 
 Example usage :
 ```javascript
-const auth = require('authjs')
+const auth = require('@vinayakrugvedi/authjs')
 
 auth.signUp('yourname@example.com', '123password321')
   .then(authObject => {
