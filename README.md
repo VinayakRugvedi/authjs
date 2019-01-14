@@ -49,12 +49,13 @@ You can either choose to have the *mailConfiguration* or the *smsConfiguration* 
 ### What does authjs provide you..?
 **All the functions provided by authjs returns a promise and always consumes arguments of type string**
 
-The following represents the set of functions available as of now...                     
+The following represents the set of functions available as of now...
+
 **Make sure you pass the email and phone number in the right format                      
 Phone number format : (+)(country code)(phone number including area code), with no
 special characters apart from '+'**                                                      
 
-Example : +91XXXXXXXXXX
+Example : +91XXXXXXXXXX                                                                  
 The following will be considered invalid : (91) XXXXXXXXXX, +91 XXX-XXXX-XXX, +91 (XXX)XXXX(XXX)...
 
 
