@@ -14,7 +14,8 @@ async function sendVerificationLink (email, token) {
       `
         **********************************************************************************
         Since you are using mailgun,
-        'domain' field is essential in the 'mailConfiguration' of the 'authConfig' file
+        'domain' field is essential with a valid value in the 'mailConfiguration' of the
+        'authConfig' file
         For more detailed information regarding the domain and the authConfig file,
         navigate to :
         https://github.com/VinayakRugvedi/authjs/blob/master/authConfig.js
@@ -34,7 +35,8 @@ async function sendVerificationLink (email, token) {
     throw new ReferenceError(
       `
       **********************************************************************************
-      'route' field is essential in the 'mailConfiguration' of the 'authConfig' file
+      'route' field is essential with a valid value in the 'mailConfiguration' of the
+      'authConfig' file
       For more detailed information regarding the route and the authConfig file,
       navigate to :
       https://github.com/VinayakRugvedi/authjs/blob/master/authConfig.js

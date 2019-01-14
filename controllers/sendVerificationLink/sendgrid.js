@@ -18,8 +18,10 @@ async function sendVerificationLink (email, token) {
     throw new ReferenceError(
       `
         **********************************************************************************
-        'route' field is essential in the 'mailConfiguration' of 'authConfig' file
-        For more detailed information regarding the route and the authConfig filenavigate to here :
+        'route' field is essential with a valid value in the 'mailConfiguration' of
+        'authConfig' file
+        For more detailed information regarding the route and the authConfig file
+        navigate to here :
         https://github.com/VinayakRugvedi/authjs/blob/master/authConfig.js
         **********************************************************************************
       `)
