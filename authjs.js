@@ -1,5 +1,6 @@
+let authConfig
 try {
-  const authConfig = require('../../../authConfig')
+  authConfig = require('../../../authConfig')
   if (authConfig.dataBaseConfiguration === undefined) throw 1
   if (authConfig.dataBaseConfiguration.dataBase === undefined ||
       authConfig.dataBaseConfiguration.dataBase.length === 0) throw 2
@@ -81,8 +82,8 @@ if (authConfig.mailConfiguration.mailer === undefined ||
   resendOtp = require('./controllers/resendOtp')
 } else {
   resendVerificationLink = require('./controllers/resendVerificationLink')
-  if (authConfig.mailConfiguration.mailer !== undefined &&
-      authConfig.mailConfiguration.mailer.length !== 0)
+  if (authConfig.smsConfiguration.sender !== undefined &&
+      authConfig.smsConfiguration.sender.length !== 0)
     resendOtp = require('./controllers/resendOtp')
 }
 
