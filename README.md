@@ -1,12 +1,15 @@
 # authjs
 
-The ultimate package for authentication on nodeJS! -
+[![start with why](https://img.shields.io/badge/start%20with-why%3F-brightgreen.svg?style=flat)](http://www.ted.com/talks/simon_sinek_how_great_leaders_inspire_action)
+
+The ultimate package for authentication on nodeJS! - Simple and straight forward...                  
 Manages signUp(creation of user accounts), verification(verification link to email or an
 OTP to a phone number) and signIn...
 
-Current stable version : v1.0.5
-
+![Dependencies status](https://david-dm.org/VinayakRugvedi/authjs.svg)
 [![Known Vulnerabilities](https://snyk.io/test/github/VinayakRugvedi/authjs/badge.svg?targetFile=package.json)](https://snyk.io/test/github/VinayakRugvedi/authjs?targetFile=package.json)
+[![npm version](https://badge.fury.io/js/%40vinayakrugvedi%2Fauthjs.svg)](https://badge.fury.io/js/%40vinayakrugvedi%2Fauthjs)
+
 
 ### Installation
 npm install @vinayakrugvedi/authjs
@@ -15,7 +18,7 @@ npm install @vinayakrugvedi/authjs
 **Set up your [authConfig file](https://github.com/VinayakRugvedi/authjs/blob/master/authConfig.js) which is the driving force for all the magics of authjs!**                                                                                                      
 **For more detailed information on authConfig file, [navigate here...](https://github.com/VinayakRugvedi/authjs/blob/master/authConfig.js)**
 
-### What does authjs do for you..?
+### What can authjs do for you..?
 Authentication!!!
 
 Well, on an abstract note, authjs provides you with some async functions to achieve the following :
@@ -91,7 +94,7 @@ auth.changePassword('yourname@example.com', '123newpassword321')
 auth.changePassword('+91XXXXXXXXXX', '123newpassword321')
 ```
 
-Based on the configurations you chosse in the *authConfig* file, you may either be provided with `auth.resendVerificationLink('yourname@example.com')` or `auth.resendOtp('+91XXXXXXXXXX')` or both if you choose too!
+Based on the configurations you chosse in the *authConfig* file, you may either be provided with `auth.resendVerificationLink('yourname@example.com')` or `auth.resendOtp('+91XXXXXXXXXX')` or *both* if you choose too!
 
 **I recommend you to have both, mailConfiguration and smsConfiguration as it provides much more flexibilty/choice for the users registering with you**
 
