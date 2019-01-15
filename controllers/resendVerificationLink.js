@@ -9,17 +9,18 @@ async function resendVerificationLink (email) {
     await dataBase.fetch('email', email)
       .catch(error => { throw error })
 
-  if(Object.keys(userData).length === 0)
+  if (Object.keys(userData).length === 0) {
     return {
       authCode: 13,
       authMessage: `The user : ${email} has not yet registered!`
     }
-  else {
-    if (userData.verified === true)
+  } else {
+    if (userData.verified === true) {
       return {
         authCode: 15,
         authMessage: `The user : ${email} has already been verified!`
       }
+    }
 
     const token = cryptoRandomString(32)
     const date = new Date()

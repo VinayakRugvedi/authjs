@@ -1,14 +1,21 @@
 let authConfig
 try {
   authConfig = require('../../../authConfig')
-  if (authConfig.dataBaseConfiguration === undefined) throw 1
+  let internalErrorCode = {
+    one: 1,
+    two: 2,
+    three: 3,
+    four: 4
+  }
+
+  if (authConfig.dataBaseConfiguration === undefined) throw internalErrorCode.one
   if (authConfig.dataBaseConfiguration.dataBase === undefined ||
-      authConfig.dataBaseConfiguration.dataBase.length === 0) throw 2
+      authConfig.dataBaseConfiguration.dataBase.length === 0) throw internalErrorCode.two
   if (authConfig.dataBaseConfiguration.connectionString === undefined ||
-      authConfig.dataBaseConfiguration.connectionString.length === 0) throw 3
+      authConfig.dataBaseConfiguration.connectionString.length === 0) throw internalErrorCode.three
   if (authConfig.dataBaseConfiguration.dataBase !== 'postgresql' &&
-      authConfig.dataBaseConfiguration.dataBase !== 'mongodb') throw 4
-} catch(error) {
+      authConfig.dataBaseConfiguration.dataBase !== 'mongodb') throw internalErrorCode.four
+} catch (error) {
   if (error === 1) {
     throw new ReferenceError(
       `
@@ -59,7 +66,7 @@ try {
       `)
   }
 
-  if(error.code === 'MODULE_NOT_FOUND') {
+  if (error.code === 'MODULE_NOT_FOUND') {
     throw new Error(
       `
         **********************************************************************************
@@ -81,8 +88,7 @@ if (authConfig.mailConfiguration === undefined) {
   resendOtp = require('./controllers/resendOtp')
 } else {
   resendVerificationLink = require('./controllers/resendVerificationLink')
-  if (authConfig.smsConfiguration !== undefined)
-    resendOtp = require('./controllers/resendOtp')
+  if (authConfig.smsConfiguration !== undefined) { resendOtp = require('./controllers/resendOtp') }
 }
 
 const updateVerifiedStatus = require('./controllers/updateVerifiedStatus')
@@ -96,7 +102,7 @@ const authjs = {
   changePassword // Arguments : (email or phone number), newPassword
 }
 
-if (resendVerificationLink === undefined) authjs.resendOtp = resendOtp  // Arguments : Phone Number
+if (resendVerificationLink === undefined) authjs.resendOtp = resendOtp // Arguments : Phone Number
 else {
   authjs.resendVerificationLink = resendVerificationLink // Arguments : email
   if (resendOtp !== undefined) authjs.resendOtp = resendOtp

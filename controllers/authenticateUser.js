@@ -7,7 +7,7 @@ const dataBase = require(`../model/${authConfig.dataBaseConfiguration.dataBase}`
 async function authenticateUser (userName, password) {
   let isPhone = false
   if (!validator.isEmail(userName)) {
-    if (validator.isMobilePhone(userName, 'any', { strictMode:true })) isPhone = true
+    if (validator.isMobilePhone(userName, 'any', { strictMode: true })) isPhone = true
     else {
       throw new Error(
         `
@@ -28,31 +28,32 @@ async function authenticateUser (userName, password) {
     await getHashIfAvailableAndAuthenticate(userName, isPhone)
       .catch(error => { throw error })
 
-  if (passwordHash === false)
+  if (passwordHash === false) {
     return {
       authCode: 13,
       authMessage: `The user : ${userName} has not yet registered! -- Cannot SignIn`
     }
-  else if (passwordHash === true)
+  } else if (passwordHash === true) {
     return {
       authCode: 14,
       authMessage: `The user : ${userName} has already registered but not verified! -- Cannot SignIn`
     }
-  else if (typeof passwordHash === 'string') {
+  } else if (typeof passwordHash === 'string') {
     const compareResult =
       await compare(passwordHash, password)
         .catch(error => { throw error })
 
-    if (compareResult === false)
+    if (compareResult === false) {
       return {
         authCode: 25,
         authMessage: `The user's(${userName}) credentials seems to be incorrect`
       }
-    else
+    } else {
       return {
         authCode: 3,
         authMessage: `The user : ${userName} is successfully authenticated/signedIn`
       }
+    }
   }
 }
 
@@ -61,11 +62,7 @@ async function getHashIfAvailableAndAuthenticate (userName, isPhone) {
     await dataBase.fetch(isPhone ? 'phone' : 'email', userName)
       .catch(error => { throw error })
 
-  if (Object.keys(fetchResult).length === 0)
-    return false
-  else if (!fetchResult.verified)
-    return true
-  else return fetchResult.password
+  if (Object.keys(fetchResult).length === 0) { return false } else if (!fetchResult.verified) { return true } else return fetchResult.password
 }
 
 async function compare (hash, password) {

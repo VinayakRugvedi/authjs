@@ -7,7 +7,7 @@ const dataBase = require(`../model/${authConfig.dataBaseConfiguration.dataBase}`
 async function changePassword (userName, newPassword) {
   let isPhone = false
   if (!validator.isEmail(userName)) {
-    if (validator.isMobilePhone(userName, 'any', { strictMode:true })) isPhone = true
+    if (validator.isMobilePhone(userName, 'any', { strictMode: true })) isPhone = true
     else {
       throw new Error(
         `
@@ -28,12 +28,12 @@ async function changePassword (userName, newPassword) {
     await dataBase.fetch(isPhone ? 'phone' : 'email', userName)
       .catch(error => { throw error })
 
-  if (Object.keys(fetchResult).length === 0)
+  if (Object.keys(fetchResult).length === 0) {
     return {
       authCode: 13,
       authMessage: `The user : ${userName} has not yet registered!`
     }
-  else {
+  } else {
     // user info found, update its newPassword by hashing
     const hash =
       await bcrypt.hash(newPassword, 10)

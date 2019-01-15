@@ -89,7 +89,7 @@ async function fetch (key, value) {
 
 async function updateVerified (id) {
   let updateResult =
-    await AuthAccount.findOneAndUpdate({ _id: id }, { $set: { verified: true }})
+    await AuthAccount.findOneAndUpdate({ _id: id }, { $set: { verified: true } })
       .catch(error => { throw error })
   console.log(updateResult, 'Update Result')
   // updateResult is a document object
@@ -98,7 +98,7 @@ async function updateVerified (id) {
 
 async function updateTokenAndExpires (id, token, expires) {
   let updateResult =
-    await AuthAccount.findOneAndUpdate({ _id: id }, { $set: { token, expires }})
+    await AuthAccount.findOneAndUpdate({ _id: id }, { $set: { token, expires } })
       .catch(error => { throw error })
   console.log(updateResult, 'Update Result')
   // updateResult is a document object
@@ -107,7 +107,7 @@ async function updateTokenAndExpires (id, token, expires) {
 
 async function updateOtpAndExpires (id, otp, expires) {
   let updateResult =
-    await AuthAccount.findOneAndUpdate({ _id: id }, { $set: { otp, expires }})
+    await AuthAccount.findOneAndUpdate({ _id: id }, { $set: { otp, expires } })
       .catch(error => { throw error })
   console.log(updateResult, 'Update Result')
   // updateResult is a document object
@@ -116,7 +116,7 @@ async function updateOtpAndExpires (id, otp, expires) {
 
 async function updatePassword (password, id) {
   let updateResult =
-    await AuthAccount.findOneAndUpdate({ _id: id }, { $set: { password }})
+    await AuthAccount.findOneAndUpdate({ _id: id }, { $set: { password } })
       .catch(error => { throw error })
   console.log(updateResult, 'Update Result')
   // updateResult is a document object

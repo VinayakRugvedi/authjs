@@ -8,7 +8,7 @@ const mailgun = require('mailgun-js')({
 })
 
 async function sendVerificationLink (email, token) {
-  if(authConfig.mailConfiguration.domain === undefined ||
+  if (authConfig.mailConfiguration.domain === undefined ||
      authConfig.mailConfiguration.domain.length === 0) {
     throw new ReferenceError(
       `

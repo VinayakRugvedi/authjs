@@ -85,13 +85,13 @@ if (authConfig.mailConfiguration === undefined) {
       `)
   }
 
-    sendVerificationLink = require(`./sendVerificationLink/${authConfig.mailConfiguration.mailer}`)
+  sendVerificationLink = require(`./sendVerificationLink/${authConfig.mailConfiguration.mailer}`)
 
-    if (authConfig.smsConfiguration !== undefined) {
-      if (authConfig.smsConfiguration.sender === undefined ||
+  if (authConfig.smsConfiguration !== undefined) {
+    if (authConfig.smsConfiguration.sender === undefined ||
           authConfig.smsConfiguration.sender.length === 0) {
-        throw new Error(
-          `
+      throw new Error(
+        `
           ********************************************************************************
           'sender' field is essential with a valid value(nexmo or twilio) in the
           'smsConfiguration' of the 'authConfig' file
@@ -104,30 +104,30 @@ if (authConfig.mailConfiguration === undefined) {
           https://github.com/VinayakRugvedi/authjs/blob/master/authConfig.js
           ********************************************************************************
           `)
-      }
-
-      if (authConfig.smsConfiguration.sender !== 'nexmo' &&
-          authConfig.smsConfiguration.sender !== 'twilio') {
-        throw new Error(
-          `
-            *******************************************************************************
-            As of now, the 'sender' field of 'smsConfiguration' can have either of the
-            two values : 'nexmo' or 'twilio'
-
-            ${authConfig.smsConfiguration.sender} is not a valid value...
-            *******************************************************************************
-          `)
-      }
-
-      sendOtp = require(`./sendOtp/${authConfig.smsConfiguration.sender}`)
     }
+
+    if (authConfig.smsConfiguration.sender !== 'nexmo' &&
+          authConfig.smsConfiguration.sender !== 'twilio') {
+      throw new Error(
+        `
+          *******************************************************************************
+          As of now, the 'sender' field of 'smsConfiguration' can have either of the
+          two values : 'nexmo' or 'twilio'
+
+          ${authConfig.smsConfiguration.sender} is not a valid value...
+          *******************************************************************************
+        `)
+    }
+
+    sendOtp = require(`./sendOtp/${authConfig.smsConfiguration.sender}`)
+  }
 }
 
 async function signUpVerification (userName, password) {
   let isPhone = false
   if (!validator.isEmail(userName)) {
     if (validator.isMobilePhone(userName, 'any', { strictMode: true })) {
-      if(authConfig.smsConfiguration === undefined) {
+      if (authConfig.smsConfiguration === undefined) {
         throw new Error(
           `
           *******************************************************************************
@@ -158,7 +158,7 @@ async function signUpVerification (userName, password) {
         `)
     }
   } else {
-    if(authConfig.mailConfiguration === undefined) {
+    if (authConfig.mailConfiguration === undefined) {
       throw new Error(
         `
         *******************************************************************************
@@ -187,34 +187,36 @@ async function signUpVerification (userName, password) {
       await storeUserDataAndSendVerification(userData, isPhone)
         .catch(error => { throw error })
     return returnObject
-  } else if (userStatus.isRegistered === true)
+  } else if (userStatus.isRegistered === true) {
     return {
       authCode: userStatus.authCode,
       authMessage: userStatus.authMessage
     }
+  }
 }
 
 async function isUserRegisteredAndVerified (userName, password, isPhone) {
   const fetchResult =
     await dataBase.fetch(isPhone ? 'phone' : 'email', userName)
       .catch(error => { throw error })
-  if (Object.keys(fetchResult).length === 0)
+  if (Object.keys(fetchResult).length === 0) {
     return {
       isRegistered: false
     }
-  else {
-    if (!fetchResult.verified)
+  } else {
+    if (!fetchResult.verified) {
       return { // User registered but not verified
         isRegistered: true,
         authCode: 14,
         authMessage: `The user : ${userName} has already registered but not verified!`
       }
-    else
+    } else {
       return {
         isRegistered: true,
         authCode: 15,
         authMessage: `The user : ${userName} has already been registered and verified - User can now Sign In with his/her credentials`
       }
+    }
   }
 }
 
