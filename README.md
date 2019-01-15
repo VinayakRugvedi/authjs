@@ -4,7 +4,9 @@ The ultimate package for authentication on nodeJS! -
 Manages signUp(creation of user accounts), verification(verification link to email or an
 OTP to a phone number) and signIn...
 
-current stable version : 1.0.5
+Current stable version : v1.0.5
+
+[![Known Vulnerabilities](https://snyk.io/test/github/VinayakRugvedi/authjs/badge.svg?targetFile=package.json)](https://snyk.io/test/github/VinayakRugvedi/authjs?targetFile=package.json)
 
 ### Installation
 npm install @vinayakrugvedi/authjs
