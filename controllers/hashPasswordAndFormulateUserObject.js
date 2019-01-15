@@ -15,7 +15,7 @@ async function hashPasswordAndFormulateUserObject (userName, password, isPhone) 
   } else {
     userData.otp = otpLib.authenticator.generate(token)
     userData.phone = userName
-    userData.expires = date.setUTCMinutes(date.getUTCMinutes() + 5) // Future time in ms from Jan 1, 1970
+    userData.expires = date.setUTCMinutes(date.getUTCMinutes() + 10) // Future time in ms from Jan 1, 1970
   }
 
   const hash =

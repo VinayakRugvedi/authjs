@@ -23,7 +23,7 @@ async function resendOtp (phone) {
 
     const otp = otpLib.authenticator.generate(userData.token)
     const date = new Date()
-    const expires = date.setUTCMinutes(date.getUTCMinutes() + 5)
+    const expires = date.setUTCMinutes(date.getUTCMinutes() + 10)
 
     await dataBase.updateOtpAndExpires(userData._id, otp, expires)
       .catch(error => { throw error })
