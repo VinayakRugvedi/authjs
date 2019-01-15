@@ -95,7 +95,7 @@ const mailConfiguration = {
 // Set up the smsConfiguration object for sending OTPs to the user provided phone number
 /*
 ************************************************
-The verification link sent is valid for 12 hours
+The OTP sent is valid for 10 minutes
 ************************************************
 */
 const smsConfiguration = {
