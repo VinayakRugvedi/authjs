@@ -27,7 +27,7 @@ async function sendOtp (phone, otp) {
         **********************************************************************************
       `)
   }
-  from = authConfig.mailConfiguration.from
+  from = authConfig.smsConfiguration.from
 
   // [+][country code][phone number including area code]sms
   const responseData =

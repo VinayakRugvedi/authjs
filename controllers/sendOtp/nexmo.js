@@ -30,13 +30,13 @@ async function sendOtp (phone, otp) {
         **********************************************************************************
       `)
   }
-  from = authConfig.mailConfiguration.from
-  
+  from = authConfig.smsConfiguration.from
+
   const text = `Hello, your OTP is : ${otp} - ${organizationName}`
 
   function sendSms () {
     return new Promise((resolve, reject) => {
-      nexmo.authMessage.sendSms(from, phone, text,
+      nexmo.message.sendSms(from, phone, text,
         (error, responseData) => {
           if (error) reject(error)
           else resolve(responseData)
