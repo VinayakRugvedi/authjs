@@ -77,13 +77,11 @@ try {
 const signUpVerification = require('./controllers/signUpVerification')
 
 let resendOtp, resendVerificationLink
-if (authConfig.mailConfiguration.mailer === undefined ||
-    authConfig.mailConfiguration.mailer.length === 0) {
+if (authConfig.mailConfiguration === undefined) {
   resendOtp = require('./controllers/resendOtp')
 } else {
   resendVerificationLink = require('./controllers/resendVerificationLink')
-  if (authConfig.smsConfiguration.sender !== undefined &&
-      authConfig.smsConfiguration.sender.length !== 0)
+  if (authConfig.smsConfiguration !== undefined)
     resendOtp = require('./controllers/resendOtp')
 }
 
