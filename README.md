@@ -1,7 +1,10 @@
 # authjs
 
 The ultimate package for authentication on nodeJS! -
-Manages signUp(creation of user accounts), verification(verification link to email or an OTP to a phone number) and signIn...
+Manages signUp(creation of user accounts), verification(verification link to email or an
+OTP to a phone number) and signIn...
+
+current stable version : 1.0.5
 
 ### Installation
 npm install @vinayakrugvedi/authjs
@@ -128,7 +131,7 @@ The following table summarizes all the possible authCodes which may arise at dif
 
 authCode | meaning
 -------- | -------
-3 | The respective function call succeeded completely
+3 | The respective function call succeeded completely to the fullest
 13 | The user-name(email-address/phone-number) in concern has not yet registered
 14 | The user-name(email-address/phone-number) in concern has registered but not verified
 15 | The user-name(email-address/phone-number) in concern has registered and is verified
