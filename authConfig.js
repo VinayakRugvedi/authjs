@@ -6,12 +6,13 @@
       (Your root directory)
   2. For easy going, I recommend you to copy-paste this files' contents as it is into
       your authConfig file :-)
-  3. NOTE : Once you copy all the contents from this file, do not remove any of the
-      configuration objects even if you aren't
-      using them, leave them as they are!!
-
-      So, remember you are just gonna add things in here!
-      YOU ARE NOT GONNA ALTER/REMOVE ANY OF THE EXISTING CONTENTS...
+  3. NOTE : Once you copy all the contents from this file, setting up your
+      dataBaseConfiguration object is mandatory.
+      However, you can either set the mailConfiguration object or the smsConfiguration
+      object or both!
+      ***************
+      Based on which configuration object you set, uncomment the corresponding export line at the bottom of this file!
+      ***************
   *************************************************************************************
 */
 
@@ -31,14 +32,16 @@ const dataBaseConfiguration = {
 }
 
 /*
-  You can either choose to take in user's email address during signUp and send them a verification link or take in user's phone number and send them an OTP for verification...
+  You can either choose to take in user's email address during signUp and send them a
+  verification link or take in user's phone number and send them an OTP for verification
+  or handle both of them...
 
   However, I recommend you to opt for both the ways!!!
-
-  NOTE : Irrespective of whatever you choose, retain the configuration objects as they are!
 */
 
-// *****DO NOT REMOVE OR DELETE this, even if you dont need this*****
+// Ensure that you atleast set one of the configuration objects...
+
+// Set up the mailConfiguration object for sending verification links to the user  provided email address
 const mailConfiguration = {
   mailer: '',
   /* mailgun or sendgrid */
@@ -84,7 +87,7 @@ const mailConfiguration = {
   */
 }
 
-// *****DO NOT REMOVE OR DELETE this, even if you dont need this*****
+// Set up the smsConfiguration object for sending OTPs to the user provided phone number
 const smsConfiguration = {
   sender: '',
   /* nexmo or twilio */
@@ -119,8 +122,11 @@ const smsConfiguration = {
   */
 }
 
+/*
+  Uncomment the exports based on what you have chosen and configured
+*/
 module.exports = {
   dataBaseConfiguration,
-  mailConfiguration,
-  smsConfiguration
+  // mailConfiguration, // Uncomment this line, if you are using the mailConfiguration
+  // smsConfiguration // Uncomment this line, if you are using the smsConfiguration
 }
