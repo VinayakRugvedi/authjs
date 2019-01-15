@@ -42,6 +42,11 @@ const dataBaseConfiguration = {
 // Ensure that you atleast set one of the configuration objects...
 
 // Set up the mailConfiguration object for sending verification links to the user  provided email address
+/*
+************************************************
+The verification link sent is valid for 12 hours
+************************************************
+*/
 const mailConfiguration = {
   mailer: '',
   /* mailgun or sendgrid */
@@ -88,6 +93,11 @@ const mailConfiguration = {
 }
 
 // Set up the smsConfiguration object for sending OTPs to the user provided phone number
+/*
+************************************************
+The verification link sent is valid for 12 hours
+************************************************
+*/
 const smsConfiguration = {
   sender: '',
   /* nexmo or twilio */
