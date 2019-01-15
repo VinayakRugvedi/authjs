@@ -1,3 +1,5 @@
+const validator = require('validator')
+
 const authConfig = require('../../../../authConfig')
 const dataBase = require(`../model/${authConfig.dataBaseConfiguration.dataBase}`)
 
