@@ -12,7 +12,8 @@ if (authConfig.mailConfiguration === undefined) {
         ********************************************************************************
         You have neither set the 'mailConfiguration' object nor the 'smsConfiguration'
         object in your 'authConfig' file
-        You have to atleast set/configure one of them in order to initiate the verification process
+        You have to atleast set/configure one of them in order to initiate the
+        verification process
         i.e to either send a verification link(if the user-name is an email address)
         or send an OTP(if the user-name is a phone number)
 
@@ -29,6 +30,7 @@ if (authConfig.mailConfiguration === undefined) {
         ********************************************************************************
         'sender' field is essential with a valid value(nexmo or twilio) in the
         'smsConfiguration' of the 'authConfig' file
+
         For more detailed information regarding the 'sender' and the 'authConfig' file,
         navigate to :
         https://github.com/VinayakRugvedi/authjs/blob/master/authConfig.js
@@ -84,6 +86,7 @@ if (authConfig.mailConfiguration === undefined) {
   }
 
     sendVerificationLink = require(`./sendVerificationLink/${authConfig.mailConfiguration.mailer}`)
+
     if (authConfig.smsConfiguration !== undefined) {
       if (authConfig.smsConfiguration.sender === undefined ||
           authConfig.smsConfiguration.sender.length === 0) {
@@ -123,9 +126,24 @@ if (authConfig.mailConfiguration === undefined) {
 async function signUpVerification (userName, password) {
   let isPhone = false
   if (!validator.isEmail(userName)) {
-    if (validator.isMobilePhone(userName, 'any', { strictMode: true }) &&
-        authConfig.smsConfiguration !== undefined) isPhone = true
-    else {
+    if (validator.isMobilePhone(userName, 'any', { strictMode: true })) {
+      if(authConfig.smsConfiguration === undefined) {
+        throw new Error(
+          `
+          *******************************************************************************
+          You are passing a phone number to 'auth.signUp' but the 'smsConfiguration'
+          is not defined in the 'authConfig' file!
+          Kindle define it in order to initiate the verification process for phone
+          numbers too
+
+          For more detailed information regarding the 'smsConfiguration' object and the
+          'authConfig' file, navigate to :
+          https://github.com/VinayakRugvedi/authjs/blob/master/authConfig.js
+          *******************************************************************************
+          `)
+      }
+      isPhone = true
+    } else {
       throw new Error(
         `
           *******************************************************************************
@@ -137,6 +155,22 @@ async function signUpVerification (userName, password) {
                     [+][country code][subscriber number including area code],
           with no special characters!
           *******************************************************************************
+        `)
+    }
+  } else {
+    if(authConfig.mailConfiguration === undefined) {
+      throw new Error(
+        `
+        *******************************************************************************
+        You are passing an email address to 'auth.signUp' but the 'mailConfiguration'
+        is not defined in the 'authConfig' file!
+        Kindle define it in order to initiate the verification process for email
+        addresses too
+
+        For more detailed information regarding the 'mailConfiguration' object and the
+        'authConfig' file, navigate to :
+        https://github.com/VinayakRugvedi/authjs/blob/master/authConfig.js
+        *******************************************************************************
         `)
     }
   }
