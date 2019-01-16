@@ -12,7 +12,6 @@ fs.readFile('./node_modules/@vinayakrugvedi/authjs/authConfig.js',
       console.log('       https://github.com/VinayakRugvedi/authjs/blob/master/authConfig.js')
       process.exit(1)
     } else {
-      console.log(data.toString())
       fs.writeFile('authConfig.js', data,
         (error, data) => {
           if (error) {
