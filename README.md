@@ -15,7 +15,13 @@ OTP to a phone number) and signIn...
 npm install @vinayakrugvedi/authjs
 
 ### Prerequisite
-**Set up your [authConfig file](https://github.com/VinayakRugvedi/authjs/blob/master/authConfig.js) which is the driving force for all the magics of authjs!**                                                                                                      
+**Set up your [authConfig file](https://github.com/VinayakRugvedi/authjs/blob/master/authConfig.js) which is the driving force for all the magics of authjs!**
+
+You can run the following command to automatically generate the *authConfig.js* file from your project's root directory(directory in which *node_modules* exist!)  :            
+```bash
+node ./node_modules/.bin/authConfig
+```
+
 **For more detailed information on authConfig file, [navigate here...](https://github.com/VinayakRugvedi/authjs/blob/master/authConfig.js)**
 
 ### What can authjs do for you..?
@@ -94,7 +100,7 @@ auth.changePassword('yourname@example.com', '123newpassword321')
 auth.changePassword('+91XXXXXXXXXX', '123newpassword321')
 ```
 
-Based on the configurations you chosse in the *authConfig* file, you may either be provided with `auth.resendVerificationLink('yourname@example.com')` or `auth.resendOtp('+91XXXXXXXXXX')` or *both* if you choose too!
+Based on the configurations you choose in the *authConfig* file, you may either be provided with `auth.resendVerificationLink('yourname@example.com')` or `auth.resendOtp('+91XXXXXXXXXX')` or *both* if you choose too!
 
 **I recommend you to have both, mailConfiguration and smsConfiguration as it provides much more flexibilty/choice for the users registering with you**
 
