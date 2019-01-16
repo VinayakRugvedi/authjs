@@ -2,11 +2,14 @@
 
 /*
   *************************************************************************************
+  If you dont have your authConfig file yet, follow the below mentioned steps :
+
   1. Create a file named 'authConfig.js' in the same directory as of the nodemodules
       (Your root directory)
   2. For easy going, I recommend you to copy-paste this files' contents as it is into
       your authConfig file :-)
-  3. NOTE : Once you copy all the contents from this file, setting up your
+
+    NOTE : Once you copy all the contents from this file, setting up your
       dataBaseConfiguration object is mandatory.
       However, you can either set the mailConfiguration object or the smsConfiguration
       object or both!
