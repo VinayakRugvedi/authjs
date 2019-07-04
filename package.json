@@ -7,7 +7,9 @@
   "description": "The ultimate library for performing authentication on nodeJS",
   "main": "authjs.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "repository": {
     "type": "git",
@@ -39,7 +41,8 @@
     "otplib": "^10.0.1",
     "pg": "^7.7.1",
     "twilio": "^3.26.0",
-    "validator": "^10.9.0"
+    "validator": "^10.9.0",
+    "snyk": "^1.189.0"
   },
   "bugs": {
     "url": "https://github.com/VinayakRugvedi/authjs/issues"
@@ -52,5 +55,6 @@
     "eslint-plugin-node": "^8.0.1",
     "eslint-plugin-promise": "^4.0.1",
     "eslint-plugin-standard": "^4.0.0"
-  }
+  },
+  "snyk": true
 }
