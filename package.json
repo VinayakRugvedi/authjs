@@ -42,7 +42,7 @@
     "pg": "^7.7.1",
     "twilio": "^3.26.0",
     "validator": "^10.9.0",
-    "snyk": "^1.193.2"
+    "snyk": "^1.258.2"
   },
   "bugs": {
     "url": "https://github.com/VinayakRugvedi/authjs/issues"
