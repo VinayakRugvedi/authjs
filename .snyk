@@ -1,5 +1,5 @@
 # Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
-version: v1.13.5
+version: v1.14.1
 ignore: {}
 # patches apply the minimum changes required to fix a vulnerability
 patch:
@@ -28,6 +28,16 @@ patch:
         patched: '2019-07-17T15:07:49.723Z'
     - snyk > @snyk/dep-graph > graphlib > lodash:
         patched: '2019-07-17T15:07:49.723Z'
+    - snyk > @snyk/snyk-cocoapods-plugin > @snyk/dep-graph > lodash:
+        patched: '2020-03-12T07:09:03.748Z'
+    - snyk > snyk-nuget-plugin > dotnet-deps-parser > lodash:
+        patched: '2020-03-12T07:09:03.748Z'
+    - snyk > @snyk/snyk-cocoapods-plugin > @snyk/dep-graph > graphlib > lodash:
+        patched: '2020-03-12T07:09:03.748Z'
+    - snyk > @snyk/snyk-cocoapods-plugin > @snyk/cocoapods-lockfile-parser > @snyk/dep-graph > lodash:
+        patched: '2020-03-12T07:09:03.748Z'
+    - snyk > @snyk/snyk-cocoapods-plugin > @snyk/cocoapods-lockfile-parser > @snyk/dep-graph > graphlib > lodash:
+        patched: '2020-03-12T07:09:03.748Z'
   SNYK-JS-HTTPSPROXYAGENT-469131:
     - mailgun-js > proxy-agent > https-proxy-agent:
         patched: '2019-10-04T06:07:59.552Z'
