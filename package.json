@@ -8,7 +8,7 @@
   "main": "authjs.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "snyk-protect": "snyk protect",
+    "snyk-protect": "snyk-protect",
     "prepare": "npm run snyk-protect"
   },
   "repository": {
@@ -36,13 +36,13 @@
     "bcryptjs": "^2.4.3",
     "crypto-random-string": "^1.0.0",
     "mailgun-js": "^0.22.0",
-    "mongoose": "^5.4.0",
+    "mongoose": "^5.13.15",
     "nexmo": "^2.4.0",
     "otplib": "^10.0.1",
     "pg": "^7.7.1",
-    "twilio": "^3.26.0",
-    "validator": "^10.9.0",
-    "snyk": "^1.298.1"
+    "twilio": "^3.31.0",
+    "validator": "^13.7.0",
+    "@snyk/protect": "latest"
   },
   "bugs": {
     "url": "https://github.com/VinayakRugvedi/authjs/issues"
