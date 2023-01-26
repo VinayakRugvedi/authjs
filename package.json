@@ -40,7 +40,7 @@
     "nexmo": "^2.4.0",
     "otplib": "^10.0.1",
     "pg": "^7.7.1",
-    "twilio": "^3.31.0",
+    "twilio": "^4.0.0",
     "validator": "^13.7.0",
     "@snyk/protect": "latest"
   },
