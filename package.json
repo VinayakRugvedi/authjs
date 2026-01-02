@@ -32,7 +32,7 @@
   "author": "A Vinayak Rugvedi",
   "license": "ISC",
   "dependencies": {
-    "@sendgrid/mail": "^6.3.1",
+    "@sendgrid/mail": "^7.0.0",
     "bcryptjs": "^2.4.3",
     "crypto-random-string": "^1.0.0",
     "mailgun-js": "^0.22.0",
@@ -40,7 +40,7 @@
     "nexmo": "^2.4.0",
     "otplib": "^10.0.1",
     "pg": "^7.7.1",
-    "twilio": "^3.31.0",
+    "twilio": "^3.41.0",
     "validator": "^13.7.0",
     "@snyk/protect": "latest"
   },
